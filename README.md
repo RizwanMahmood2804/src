@@ -1,0 +1,4 @@
+algdat
+======
+
+Algoritmer og datastrukturer
