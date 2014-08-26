@@ -610,6 +610,24 @@ public class Tabell
   {
     return xunion(a,a.length,b,b.length,c);
   }
+  
+    public static int[] nestMaks(int[] a){
+        
+        if(a.length < 1) throw new IllegalArgumentException("Må ha minst en variabel");
+        
+        int nm = 0;
+        int m = 0;
+        for(int i = 0; i < a.length; i++){
+            if (a[i]>a[nm]){
+                nm = i;
+                if(a[nm] > a[m]){
+                    nm = m;
+                    m=i;
+                }
+            }
+        }
+        return new int[] {m,nm};
+    }
 
   public static int maks(int[] a, int fra, int til)
   {
