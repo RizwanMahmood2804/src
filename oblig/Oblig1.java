@@ -190,25 +190,38 @@ Lag metoden public static int antallUlikeUsortert(int[] a). Tabellen a kan nå
 */
     public static int antallUlikeUsortert(int[] a){
         int antallUlike = 0;
-        int antallU = 0;
+        boolean antallU = false;
         for(int i = 0; i<a.length; i++){
             for(int j = 0; j<a.length; j++){
-                System.out.println(a[i]+"=="+a[j]);
-                    
+                antallU = false;
+                System.out.println("Vi tester: "+a[i]+"=="+a[j]);
                 if(a[i] == a[j]){
-                    antallU = 0;
-                    for(int k = 0; k<i; k++){
-                        if(a[j] == a[k])
-                        {
-                            System.out.println("a[j]"+a[j]+"==a[k]"+a[k]);
-                            antallU++;
-                        }
-                    }
-                    if(antallU == 0){
+                    System.out.println("Score, la oss teste mer!");
+                    antallU = true;
+                    if(i == 0 && j== 0){
                         antallUlike++;
-                        antallU = 0;
+                        System.out.println("den første må uansett med");
+                        antallU = false;
                     }
-
+                    if(i>0){
+                        for(int k = 0; k<j; k++){
+                            System.out.println("j er "+j);
+                            System.out.println("a[i]==a[k] "+a[j]+"=="+a[k]);
+                            if(a[j] == a[k]) {    
+                                System.out.println("Denne finnes fra før, stopp galskapen!");
+                                antallU = false;
+                            }
+                        }
+                        System.out.println("antallU er "+antallU);
+                        if(antallU == true && a[i]==a[j]){
+                            System.out.println("Da er alt i orden. Vi legger til en til!");
+                            antallUlike++;
+                        }                    
+                    } else {
+                        System.out.println("Den første rada skal bare telles en gang, og det er gjort");
+                    }                        
+                } else {
+                    System.out.println("Broke it, dette var ikke fulltreffer.");
                 }
             }
         }
@@ -218,18 +231,45 @@ Lag metoden public static int antallUlikeUsortert(int[] a). Tabellen a kan nå
 
 // Oppgave 5
 /*
-Det kan være aktuelt å «rotere» elementene i en tabell. En rotasjon på én enhet gjøres ved at det siste elementet blir det første og alle de andre forskyves én enhet mot høyre.
+Det kan være aktuelt å «rotere» elementene i en tabell. En rotasjon på én enhet 
+    gjøres ved at det siste elementet blir det første og alle de andre forskyves 
+    én enhet mot høyre.
 
 A	B	C	D	E	F	G	H	I	J
 Tabell 2 : Bokstavene fra A til I
 J	A	B	C	D	E	F	G	H	I
+
 Tabell 3 : Elementene i Tabell 2 forskjøvet én enhet
-På figuren over har elementene i den første tabellen blitt «rotert» én enhet. Lag metoden public static void rotasjon(char[] a). Den skal «rotere» innholdet i tabellen a én enhet. En rotasjon i en tom tabell eller i en tabell med nøyaktig ett element er ingen feilsituasjon. Men rotasjonen vil da ikke endre noe.
+På figuren over har elementene i den første tabellen blitt «rotert» én enhet. 
+    Lag metoden public static void rotasjon(char[] a). Den skal «rotere» 
+    innholdet i tabellen a én enhet. En rotasjon i en tom tabell eller i en 
+    tabell med nøyaktig ett element er ingen feilsituasjon. Men rotasjonen vil 
+    da ikke endre noe.
 */
 
+public static void rotasjon(char[] a){
+    char temp;
+    if(a.length >1){
+        temp = a[a.length-1];
+        for(int i=a.length-1; i>0; i--){
+            a[i] = a[i-1];
+        }
+        a[0] = temp;
+    }
+}
+
+    
 // Oppgave 6
 /*
-Her skal vi gå videre fra Oppgave 5. Hvis vi tenker oss at tabellen er «bøyd til en sirkel», er det mer naturlig å se på dette som en rotasjon. Dermed kan vi «rotere» et valgfritt antall enheter. Lag metoden public static void rotasjon(char[] a, int k) der k er et vilkårlig heltall. Hvis k = 1, skal metoden ha samme effekt som metoden i Oppgave 5. Hvis k er negativ, skal rotasjonen gå motsatt vei. En rotasjon i en tom tabell eller i en tabell med nøyaktig ett element er ingen feilsituasjon. Men rotasjonen vil da ikke endre noe. Målet er å gjøre metoden så effektiv som mulig. Følgende programbit viser hvordan metoden skal virke:
+Her skal vi gå videre fra Oppgave 5. Hvis vi tenker oss at tabellen er 
+«bøyd til en sirkel», er det mer naturlig å se på dette som en rotasjon. 
+Dermed kan vi «rotere» et valgfritt antall enheter. Lag metoden public static 
+void rotasjon(char[] a, int k) der k er et vilkårlig heltall. Hvis k = 1, skal 
+metoden ha samme effekt som metoden i Oppgave 5. Hvis k er negativ, skal 
+rotasjonen gå motsatt vei. En rotasjon i en tom tabell eller i en tabell med 
+nøyaktig ett element er ingen feilsituasjon. Men rotasjonen vil da ikke endre 
+noe. Målet er å gjøre metoden så effektiv som mulig. Følgende programbit viser 
+hvordan metoden skal virke:
 
   char[] a = {'A','B','C','D','E','F','G','H','I','J'};
   System.out.println(Arrays.toString(a));
@@ -242,6 +282,63 @@ Her skal vi gå videre fra Oppgave 5. Hvis vi tenker oss at tabellen er «bøyd 
   [H, I, J, A, B, C, D, E, F, G]   // en rotasjon på tre enheter mot høyre
   [J, A, B, C, D, E, F, G, H, I]   // en rotasjon to enheter mot venstre
 */
+
+public static void rotasjon(char[] a, int k){
+    char temp;
+    char temp2;
+    temp =a[a.length-1];
+/*    if(k >0){
+        temp2 = a[k-1];
+        a[k] = temp;
+    } else {
+        temp2 = a[(a.length-1)+k];
+        a[(a.length-1)+k] = temp;
+    }
+    */
+    for(int i = 0; i<a.length-1; i++){
+        temp=a[i];
+        if(i+k <0){
+            
+        } else if(i+k < a.length-1){
+            if(i+(a.length-k) >a.length-1){
+               a[i]= a[(i+(a.length-k)-(a.length))];
+            }else {
+                a[i] = a[i+(a.length-k)];
+            }
+
+            a[i+k]= temp;
+        }
+    }
+    
+    /*
+    int i =a.length-1;
+    if(a.length >1){
+        temp = a[a.length-1];
+        for(int j=a.length-1; j>0; j--){
+            System.out.println("i ="+i);
+            if((i-k) >a.length-1){
+                temp2 = a[i];
+                i=0;
+//                a[i] = a[i];
+                a[i] = temp2;
+            } else if((i-k)<0){
+                temp2 = a[i];
+                i=a.length-1;
+                a[i] = temp2;
+            } else{
+                System.out.println("i+k"+i + "+"+k);
+                a[i] = a[i-k];
+            }
+
+            i--;
+        }
+        a[0] = temp;
+    */
+    }
+}
+
+
+
 // Oppgave 7
 /*
 a) Lag metoden public static String flett(String s, String t). Den skal «flette» sammen tegnstrengene s og t slik at reultatet blir en tegnstreng der annethvert tegn kommer fra s og annethvert fra t. Hvis s og t har ulik lengde, skal det som er «til overs» legges inn bakerst. Resultatet skal returneres. Flg. eksempel viser hvordan den skal virke:
