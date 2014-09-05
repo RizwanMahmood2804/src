@@ -53,16 +53,19 @@ Antall ombyttinger vil være avhengig av hvordan verdiene ligger. Når blir det
         int maks = 0;
         int temp = 0;
         int antBytter = 0;
-        for(int i = 0; i<a.length-1; i++){
-            if(a[i] > a[i+1]){
-                temp = a[i];
-                a[i] = a[i+1];
-                a[i+1] = temp;
-                antBytter++;
+        if(a.length>1){
+            for(int i = 0; i<a.length-1; i++){
+                if(a[i] > a[i+1]){
+                    temp = a[i];
+                    a[i] = a[i+1];
+                    a[i+1] = temp;
+                    antBytter++;
+                }
+                maks=a[i+1];
             }
-            maks=a[i+1];
+        }else if(a.length==1){
+            maks = a[0];
         }
-        System.out.println("Det ble gjort "+antBytter+ " bytter");
         return maks;
     }
     /*
@@ -101,8 +104,8 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
                 }
                 
             }
-            System.out.println("Antallbytter:"+ antBytter);            
-            System.out.println("Sortert array; "+Arrays.toString(a));
+//            System.out.println("Antallbytter:"+ antBytter);            
+//            System.out.println("Sortert array; "+Arrays.toString(a));
         }
     }
     public static int[] sortering2(int[] a){
@@ -119,10 +122,10 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
                         antBytter++;
                     }
                 }
-                System.out.println("Antallbytter:"+ antBytter);
+//                System.out.println("Antallbytter:"+ antBytter);
             }
-            System.out.println("Sortert array; "+Arrays.toString(a));
-            System.out.println("Antall bytter: "+antBytter/a.length);
+//            System.out.println("Sortert array; "+Arrays.toString(a));
+//            System.out.println("Antall bytter: "+antBytter/a.length);
         }
         return a;
     }    
@@ -155,11 +158,12 @@ først sjekkes om a er sortert stigende. Hvis ikke kastes en IllegalStateExcepti
 */
 
     public static int antallUlikeSortert(int[] a){
-        int antallUlike = 0;
+        int antallUlike = 0;   
         if(a.length > 1){
-            for(int i = 1; i<a.length; i++){
-                if(a[i-1] <= a[i]){
-                    if(a[i-1] != a[i]){
+            antallUlike = 1;
+            for(int i = 0; i<a.length-1; i++){
+                if(a[i] <= a[i+1]){
+                    if(a[i] != a[i+1]){
                         antallUlike++;
                     }
                 } else {
@@ -167,7 +171,7 @@ først sjekkes om a er sortert stigende. Hvis ikke kastes en IllegalStateExcepti
                 }
             }
         }else if(a.length == 1) {
-            antallUlike = 1;
+            antallUlike = 1;            
             return antallUlike;
         }
         return antallUlike;
@@ -194,34 +198,34 @@ Lag metoden public static int antallUlikeUsortert(int[] a). Tabellen a kan nå
         for(int i = 0; i<a.length; i++){
             for(int j = 0; j<a.length; j++){
                 antallU = false;
-                System.out.println("Vi tester: "+a[i]+"=="+a[j]);
+//                System.out.println("Vi tester: "+a[i]+"=="+a[j]);
                 if(a[i] == a[j]){
-                    System.out.println("Score, la oss teste mer!");
+//                    System.out.println("Score, la oss teste mer!");
                     antallU = true;
                     if(i == 0 && j== 0){
                         antallUlike++;
-                        System.out.println("den første må uansett med");
+//                        System.out.println("den første må uansett med");
                         antallU = false;
                     }
                     if(i>0){
                         for(int k = 0; k<j; k++){
-                            System.out.println("j er "+j);
-                            System.out.println("a[i]==a[k] "+a[j]+"=="+a[k]);
+//                            System.out.println("j er "+j);
+//                            System.out.println("a[i]==a[k] "+a[j]+"=="+a[k]);
                             if(a[j] == a[k]) {    
-                                System.out.println("Denne finnes fra før, stopp galskapen!");
+//                                System.out.println("Denne finnes fra før, stopp galskapen!");
                                 antallU = false;
                             }
                         }
-                        System.out.println("antallU er "+antallU);
+//                        System.out.println("antallU er "+antallU);
                         if(antallU == true && a[i]==a[j]){
-                            System.out.println("Da er alt i orden. Vi legger til en til!");
+//                            System.out.println("Da er alt i orden. Vi legger til en til!");
                             antallUlike++;
                         }                    
                     } else {
-                        System.out.println("Den første rada skal bare telles en gang, og det er gjort");
+//                        System.out.println("Den første rada skal bare telles en gang, og det er gjort");
                     }                        
                 } else {
-                    System.out.println("Broke it, dette var ikke fulltreffer.");
+//                    System.out.println("Broke it, dette var ikke fulltreffer.");
                 }
             }
         }
@@ -288,13 +292,17 @@ hvordan metoden skal virke:
         if(a.length >1){
             for(int i = 0; i < a.length; i++){
                 if(i+k < 0){
-                    if((i)-(k%(a.length-1)) < a.length-1){
-                        temp[a.length+(k%(a.length))+(i)] = a[i];
-                    }else {
+
+                    if((i)-(k%(a.length-1)) < a.length-1 && (i)-(k%(a.length-1)) >0){
+                        temp[a.length+((k%(a.length))+(i))] = a[i];
+                    }else if(k > 0) {
+                        System.out.println("A = "+Arrays.toString(a));
+                        System.out.println("i = "+i);
+                        System.out.println("k = "+k);                        
                         temp[(i)+(k%(a.length))] = a[i];
                     }
                 }else if(i+k > (a.length-1)){
-                    int u = (i+k)%(a.length);
+                    int u = (i+k)%(a.length-0);
                     temp[u] = a[i];
                 }else {
                     temp[i+k] = a[i];
@@ -388,7 +396,73 @@ idé som i Programkode 1.2.5 a). Bruk tre hjelpevariabler for verdier og tre
 hjelpevariabler for indekser. Hvis tabellen a har færre enn tre elementer, skal 
 det kastes en IllegalArgumentException sammen med en passende tekst. Metoden 
 skal ikke endre noe på innholdet i tabellen a.
+*/
+public static int[] tredjeMaks(int[] a){
+    if(a.length < 3)throw new IllegalArgumentException("Her er det noe muffens. "
+            + "Skal du ha de tre største tallene? Så må må du ha MINST tre tall!");
+    
+    int n = a.length;  
+    
+    int m = 0;
+    int nm = 1;
+    int nnm = 2;
+    if(a[2] >a[1] && a[2] > a[0]) {
+        m=2;
+        if(a[1]>a[0]){
+            nnm=0;
+            nm=1;        
+        } else{
+            nm=0;
+            nnm=1;
+        }
+    }else if(a[1]>a[2]&& a[1]>a[0]){
+        m=1;
+        if(a[2]>a[0]){
+            nnm=0;
+            nm=2;        
+        } else{
+            nm=0;
+            nnm=2;
+        }    
+    }else if(a[0]>a[1]&& a[0]>a[2]){
+        m=0;
+        if(a[2]>a[1]){
+            nm=2;
+            nnm=1;
+        }else{
+            nm=1;
+            nnm=2;        
+        }
+    }
 
+    int maksverdi = a[m];                // største verdi
+    int nestmaksverdi = a[nm];           // nest største verdi
+    int nestnestmaksverdi = a[nnm];     // 3. største verdi
+    
+    for (int i = 3; i < n; i++) {
+        if (a[i] > maksverdi && a[i] > nestmaksverdi) {
+          nnm = nm;
+          nm = m;
+          nestnestmaksverdi = nestmaksverdi; // ny nest nest størst
+          nestmaksverdi = maksverdi;     // ny nest størst
+
+          m = i;
+          maksverdi = a[m];              // ny størst
+        } else if(a[i] > nestmaksverdi) {
+          nnm = nm;
+          nestnestmaksverdi = a[nnm];         // ny nest størst
+          nm = i;
+          nestmaksverdi = a[nm];         // ny nest størst
+        } else if(a[i] > nestnestmaksverdi){
+          nnm = i;
+          nestnestmaksverdi = a[nnm];         // ny nest størst          
+        }
+    } // for
+
+    return new int[] {m,nm, nnm};    // n i posisjon 0, nm i posisjon 1
+}
+
+/*
 b)  Lag testmetoden public static void tredjeMaksTest(). Den skal teste din 
 løsning av Oppgave 8a) og lages på en tilsvarende måte som Programkode 1.1.7 
 a). Den skal teste at kastes unntak når det er nødvendig og at det kastes rett 
@@ -397,6 +471,10 @@ av tabellens tre første verdier. Husk at det er 6 forskjellige muligheter
 (permutasjoner) for de tre første verdiene i tabellen. Metoden public static 
 void tredjeMaksTest() skal være med i løsningen som sendes inn.
 */
+
+public static void tredjeMaksTest(){
+
+}
 
 // Oppgave 9
 /*
@@ -411,7 +489,9 @@ a finner en verdi som er mindre enn enn den største (bakerste) i tabellen verdi
 setter du den inn på rett sortert plass. Dermed vil den som opprinnelig var 
 bakerst, forsvinne. Osv.
 */
-
+public static int[] kMinst(int[] a, int k){
+    return a;
+}
 // Oppgave 10
 /*
 Vi sier at et ord er inneholdt i et annet ord hvis hver bokstav i det første 
@@ -428,5 +508,7 @@ av bokstaver. Et «tomt» ord (en tom tegnstreng) er innholdt i alle andre ord
 (tegnstrenger). Det er ingen grense på hvor lange ordene kan være. Lag metoden 
 så effektiv som mulig.
 */    
-    
+    public static boolean inneholdt(String a, String b){
+        return true;
+    }
 }
