@@ -473,8 +473,29 @@ void tredjeMaksTest() skal være med i løsningen som sendes inn.
 */
 
 public static void tredjeMaksTest(){
+    int[] a = {8,3,5,7,9,6,10,2,1,4};  // maksverdien 10 er i posisjon 6
 
-}
+    if (maks(a) != 6)  // kaller maks-metoden
+      System.out.println("Kodefeil: Gir feil posisjon for maksverdien!");
+
+    a = new int[0];  // en tom tabell, lengde lik 0
+    boolean unntak = false;
+
+    try
+    {
+      maks(a);  // kaller maks-metoden
+    }
+    catch (Exception e)
+    {
+      unntak = true;
+      if (!(e instanceof IllegalArgumentException))
+        System.out.println("Kodefeil: Feil unntak for en tom tabell!");
+    }
+
+    if (!unntak)
+      System.out.println("Kodefeil: Mangler unntak for en tom tabell!");
+  }
+
 
 // Oppgave 9
 /*
@@ -490,7 +511,18 @@ setter du den inn på rett sortert plass. Dermed vil den som opprinnelig var
 bakerst, forsvinne. Osv.
 */
 public static int[] kMinst(int[] a, int k){
-    return a;
+    if(a.length <k) throw new IllegalArgumentException("Antall minsteverdier er større enn selve tabellen");
+    if(k <1) throw new IllegalArgumentException("Du må be om minst 1 verdi å vise!");
+    
+    int[] verdier = new int[k];
+    for(int i =0; i<k;i++){
+        verdier[i] = a[i];
+    }
+    
+    for(int i =0; i<a.length-1; i++){
+    }
+    
+    return verdier;
 }
 // Oppgave 10
 /*
