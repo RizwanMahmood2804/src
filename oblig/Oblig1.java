@@ -283,65 +283,38 @@ hvordan metoden skal virke:
   [J, A, B, C, D, E, F, G, H, I]   // en rotasjon to enheter mot venstre
 */
 
-public static void rotasjon(char[] a, int k){
-    char temp;
-    char temp2;
-    temp =a[a.length-1];
-/*    if(k >0){
-        temp2 = a[k-1];
-        a[k] = temp;
-    } else {
-        temp2 = a[(a.length-1)+k];
-        a[(a.length-1)+k] = temp;
-    }
-    */
-    for(int i = 0; i<a.length-1; i++){
-        temp=a[i];
-        if(i+k <0){
-            
-        } else if(i+k < a.length-1){
-            if(i+(a.length-k) >a.length-1){
-               a[i]= a[(i+(a.length-k)-(a.length))];
-            }else {
-                a[i] = a[i+(a.length-k)];
+    public static void rotasjon(char[] a, int k){
+        char[] temp = new char[a.length];
+        if(a.length >1){
+            for(int i = 0; i < a.length; i++){
+                if(i+k < 0){
+                    if((i)-(k%(a.length-1)) < a.length-1){
+                        temp[a.length+(k%(a.length))+(i)] = a[i];
+                    }else {
+                        temp[(i)+(k%(a.length))] = a[i];
+                    }
+                }else if(i+k > (a.length-1)){
+                    int u = (i+k)%(a.length);
+                    temp[u] = a[i];
+                }else {
+                    temp[i+k] = a[i];
+                }
             }
-
-            a[i+k]= temp;
+            for(int j=0; j<a.length; j++){
+                a[j] = temp[j];
+            }
         }
     }
     
-    /*
-    int i =a.length-1;
-    if(a.length >1){
-        temp = a[a.length-1];
-        for(int j=a.length-1; j>0; j--){
-            System.out.println("i ="+i);
-            if((i-k) >a.length-1){
-                temp2 = a[i];
-                i=0;
-//                a[i] = a[i];
-                a[i] = temp2;
-            } else if((i-k)<0){
-                temp2 = a[i];
-                i=a.length-1;
-                a[i] = temp2;
-            } else{
-                System.out.println("i+k"+i + "+"+k);
-                a[i] = a[i-k];
-            }
-
-            i--;
-        }
-        a[0] = temp;
-    */
-    }
-}
-
-
-
+    
+    
 // Oppgave 7
 /*
-a) Lag metoden public static String flett(String s, String t). Den skal «flette» sammen tegnstrengene s og t slik at reultatet blir en tegnstreng der annethvert tegn kommer fra s og annethvert fra t. Hvis s og t har ulik lengde, skal det som er «til overs» legges inn bakerst. Resultatet skal returneres. Flg. eksempel viser hvordan den skal virke:
+a) Lag metoden public static String flett(String s, String t). Den skal «flette» 
+    sammen tegnstrengene s og t slik at reultatet blir en tegnstreng der 
+    annethvert tegn kommer fra s og annethvert fra t. Hvis s og t har ulik 
+    lengde, skal det som er «til overs» legges inn bakerst. Resultatet skal 
+    returneres. Flg. eksempel viser hvordan den skal virke:
 
   String a = flett("ABC","DEFGH");
   String b = flett("IJKLMN","OPQ");
@@ -349,7 +322,37 @@ a) Lag metoden public static String flett(String s, String t). Den skal «flette
   System.out.println(a + " " + b + " " + c);
 
   // Utskrift: ADBECFGH IOJPKQLMN AB
-b) Lag metoden public static String flett(String... s). Den skal «flette» sammen tegnstrengene i s. Husk at s nå er en tabell av tegnstrenger. I koden vil derfor s[0] være første streng i tabellen s, osv. Flettingen skal være slik: Først hentes fortløpende det første tegnet fra hver tegnstreng, deretter fortløpende det andre tegnet, osv. De tegnstrengene som er «brukt opp», dvs. vi er ferdige med alle tegnene der, hoppes over. Resultatet skal returneres. Flg. eksempel viser hvordan den skal virke:
+    */
+    public static String flett(String s, String t){
+        String nyString = "";
+        int lengde;
+        if(s.length() <= t.length()){
+            lengde = s.length();
+            for(int i=0; i<lengde;i++){
+                nyString +=s.substring(i, i+1);
+                nyString +=t.substring(i, i+1);
+            }
+            nyString +=t.substring(s.length(), t.length());
+        } else {
+            lengde = t.length();
+            for(int i=0; i<lengde;i++){
+                nyString +=s.substring(i, i+1);
+                nyString +=t.substring(i, i+1);
+            }
+            nyString +=s.substring(t.length(), s.length());
+        }
+        return nyString;
+    }
+
+        /*
+    
+b) Lag metoden public static String flett(String... s). Den skal «flette» sammen 
+    tegnstrengene i s. Husk at s nå er en tabell av tegnstrenger. I koden vil 
+    derfor s[0] være første streng i tabellen s, osv. Flettingen skal være slik: 
+    Først hentes fortløpende det første tegnet fra hver tegnstreng, deretter 
+    fortløpende det andre tegnet, osv. De tegnstrengene som er «brukt opp», dvs. 
+    vi er ferdige med alle tegnene der, hoppes over. Resultatet skal returneres. 
+    Flg. eksempel viser hvordan den skal virke:
 
   String a = flett("AM ","L","GEDS","ORATKRR","","R TRTE","IO","TGAUU");
   System.out.println(a);
@@ -357,22 +360,73 @@ b) Lag metoden public static String flett(String... s). Den skal «flette» samm
   // Utskrift: ALGORITMER OG DATASTRUKTURER
     
 */
-
+public static String flett(String... s){
+    String output = "";
+    int maksLengde = 0;
+    for (String item : s) {
+        if (item.length() > maksLengde) {
+            maksLengde = item.length();
+        }
+    }
+    for(int j = 0; j <maksLengde; j++){
+        for (String item : s) {
+            if (j < item.length() && item.length() > 0) {
+                output += item.substring(j, j+1);
+            }
+        }
+    }
+    return output;
+}
 // Oppgave 8
 /*
-a) Lag metoden public static int[] tredjeMaks(int[] a). Den skal finne posisjonene til de tre største verdiene i tabellen a. Den skal returnere en tabell med tre verdier der første verdi skal være posisjonen til den største verdien i a, andre verdi skal være posisjonen til den nest største verdien i a og tredje verdi posisjonen til den tredje største verdien i a. Bruk samme type idé som i Programkode 1.2.5 a). Bruk tre hjelpevariabler for verdier og tre hjelpevariabler for indekser. Hvis tabellen a har færre enn tre elementer, skal det kastes en IllegalArgumentException sammen med en passende tekst. Metoden skal ikke endre noe på innholdet i tabellen a.
+a) Lag metoden public static int[] tredjeMaks(int[] a). Den skal finne 
+posisjonene til de tre største verdiene i tabellen a. Den skal returnere en 
+tabell med tre verdier der første verdi skal være posisjonen til den største 
+verdien i a, andre verdi skal være posisjonen til den nest største verdien i a 
+og tredje verdi posisjonen til den tredje største verdien i a. Bruk samme type 
+idé som i Programkode 1.2.5 a). Bruk tre hjelpevariabler for verdier og tre 
+hjelpevariabler for indekser. Hvis tabellen a har færre enn tre elementer, skal 
+det kastes en IllegalArgumentException sammen med en passende tekst. Metoden 
+skal ikke endre noe på innholdet i tabellen a.
 
-b)  Lag testmetoden public static void tredjeMaksTest(). Den skal teste din løsning av Oppgave 8a) og lages på en tilsvarende måte som Programkode 1.1.7 a). Den skal teste at kastes unntak når det er nødvendig og at det kastes rett type unntak. Spesielt er det viktig at metoden tester på alle mulige kombinasjoner av tabellens tre første verdier. Husk at det er 6 forskjellige muligheter (permutasjoner) for de tre første verdiene i tabellen. Metoden public static void tredjeMaksTest() skal være med i løsningen som sendes inn.
+b)  Lag testmetoden public static void tredjeMaksTest(). Den skal teste din 
+løsning av Oppgave 8a) og lages på en tilsvarende måte som Programkode 1.1.7 
+a). Den skal teste at kastes unntak når det er nødvendig og at det kastes rett 
+type unntak. Spesielt er det viktig at metoden tester på alle mulige kombinasjoner 
+av tabellens tre første verdier. Husk at det er 6 forskjellige muligheter 
+(permutasjoner) for de tre første verdiene i tabellen. Metoden public static 
+void tredjeMaksTest() skal være med i løsningen som sendes inn.
 */
 
 // Oppgave 9
 /*
-Lag metoden public static int[] kMinst(int[] a, int k). Den skal returnere en tabell som inneholder de k minste verdiene (ikke posisjonene) i tabellen a. Hvis k er mindre enn 1 eller større en lengden til a, skal det kastes en IllegalArgumentException sammen med en passende tekst. Metoden skal ikke endre noe på innholdet i tabellen a. Start metoden med å lage en hjelpetabell med lengde k. La den f.eks. hete verdier. Kopiér så inn i den de k første verdiene fra a. Deretter sorteres tabellen verdier. Hvis du så videre utover i tabellen a finner en verdi som er mindre enn enn den største (bakerste) i tabellen verdier, setter du den inn på rett sortert plass. Dermed vil den som opprinnelig var bakerst, forsvinne. Osv.
+Lag metoden public static int[] kMinst(int[] a, int k). Den skal returnere en 
+tabell som inneholder de k minste verdiene (ikke posisjonene) i tabellen a. 
+Hvis k er mindre enn 1 eller større en lengden til a, skal det kastes en 
+IllegalArgumentException sammen med en passende tekst. Metoden skal ikke endre 
+noe på innholdet i tabellen a. Start metoden med å lage en hjelpetabell med 
+lengde k. La den f.eks. hete verdier. Kopiér så inn i den de k første verdiene 
+fra a. Deretter sorteres tabellen verdier. Hvis du så videre utover i tabellen 
+a finner en verdi som er mindre enn enn den største (bakerste) i tabellen verdier, 
+setter du den inn på rett sortert plass. Dermed vil den som opprinnelig var 
+bakerst, forsvinne. Osv.
 */
 
 // Oppgave 10
 /*
-Vi sier at et ord er inneholdt i et annet ord hvis hver bokstav i det første ordet forekommer minst like mange ganger i det andre ordet som i det første, men ikke nødvendigvis i samme rekkefølge. F.eks. er ABBA inneholdt i både ABBABBA, BARAB, BARBARER og RABARBRA. ABBA har to A-er og to B-er og minst så mange av de to bokstavene har også de fire «ordene». Men ABBA er hverken inneholdt i BARBERER eller i AKROBAT. BARBERER har to B-er, men kun én A og AKROBAT har to A-er, men kun én B. Lag metoden public static boolean inneholdt(String a, String b) der a og b er «ord». Du kan ta som gitt at tegnstrengene a og b kun har store bokstaver. Metoden skal returnere true hvis a er inneholdt i b og false ellers. Vi tenker oss her at et «ord» rett og slett er en oppramsing av bokstaver. Et «tomt» ord (en tom tegnstreng) er innholdt i alle andre ord (tegnstrenger). Det er ingen grense på hvor lange ordene kan være. Lag metoden så effektiv som mulig.
+Vi sier at et ord er inneholdt i et annet ord hvis hver bokstav i det første 
+ordet forekommer minst like mange ganger i det andre ordet som i det første, 
+men ikke nødvendigvis i samme rekkefølge. F.eks. er ABBA inneholdt i både 
+ABBABBA, BARAB, BARBARER og RABARBRA. ABBA har to A-er og to B-er og minst så 
+mange av de to bokstavene har også de fire «ordene». Men ABBA er hverken 
+inneholdt i BARBERER eller i AKROBAT. BARBERER har to B-er, men kun én A og 
+AKROBAT har to A-er, men kun én B. Lag metoden public static boolean inneholdt
+(String a, String b) der a og b er «ord». Du kan ta som gitt at tegnstrengene a 
+og b kun har store bokstaver. Metoden skal returnere true hvis a er inneholdt i 
+b og false ellers. Vi tenker oss her at et «ord» rett og slett er en oppramsing 
+av bokstaver. Et «tomt» ord (en tom tegnstreng) er innholdt i alle andre ord 
+(tegnstrenger). Det er ingen grense på hvor lange ordene kan være. Lag metoden 
+så effektiv som mulig.
 */    
     
 }

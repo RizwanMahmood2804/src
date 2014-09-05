@@ -30,12 +30,18 @@ public class AlgData {
         }
 */
 //        int[] a = {5,2,6,32,12,52,5,21,2,5,6,3,1,32,5,2,5,6};
-        int[] a = {3,2,1,1,3,1,2};
+/*        int[] a = {3,2,1,1,3,1,2};
         
         char[] c = {'a', 'b','c','d','e','f','g','h','i','j'};
         System.out.println(Arrays.toString(c));
         Oblig1.rotasjon(c, 4);
         System.out.println(Arrays.toString(c));
+*/
+        //String a = "Ber";
+        //String b = "Beve";
+        //System.out.println(Oblig1.flett(a, b));
+        String a = Oblig1.flett("AM ","L","GEDS","ORATKRR","","R TRTE","IO","TGAUU");
+        System.out.println(a);        
 //        System.out.println(Oblig1.antallUlikeSortert(Oblig1.sortering2(a)));
 //        System.out.println("Antall ulike sorter: "+Oblig1.antallUlikeUsortert(a));
 //        Oblig1.sortering(a);
