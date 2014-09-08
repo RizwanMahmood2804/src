@@ -214,6 +214,7 @@ public class Oblig1Test
         || Oblig1.antallUlikeUsortert(d) != 6
         || Oblig1.antallUlikeUsortert(e) != 5
         || Oblig1.antallUlikeUsortert(f) != 3)
+
     {
       System.out.println("Oppgave 4: b) Metoden gir feil resultat!");
       antallFeil++;

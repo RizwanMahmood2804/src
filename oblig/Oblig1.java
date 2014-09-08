@@ -314,6 +314,8 @@ hvordan metoden skal virke:
 */
 
     public static void rotasjon(char[] a, int k){
+        
+/*
         char[] temp = new char[a.length];
         if(a.length >1){
             for(int i = 0; i < a.length; i++){
@@ -338,6 +340,7 @@ hvordan metoden skal virke:
                 a[j] = temp[j];
             }
         }
+*/
     }
     
     
