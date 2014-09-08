@@ -784,7 +784,6 @@ public class Oblig1Test
     tid = System.currentTimeMillis() - tid;
     if (tid > 200)
     {
-        System.out.println("Tid:"+tid);
       System.out.println
         ("Oppgave 9: h) Metoden er altfor ineffektiv!");
       antallFeil++;

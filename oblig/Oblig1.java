@@ -314,23 +314,17 @@ hvordan metoden skal virke:
 */
 
     public static void rotasjon(char[] a, int k){
-        
-/*
-        char[] temp = new char[a.length];
-        if(a.length >1){
-            for(int i = 0; i < a.length; i++){
-                if(i+k < 0){
-
-                    if((i)-(k%(a.length-1)) < a.length-1 && (i)-(k%(a.length-1)) >0){
-                        temp[a.length+((k%(a.length))+(i))] = a[i];
-                    }else if(k > 0) {
-                        System.out.println("A = "+Arrays.toString(a));
-                        System.out.println("i = "+i);
-                        System.out.println("k = "+k);                        
-                        temp[(i)+(k%(a.length))] = a[i];
+        char[] temp = new char[a.length]; // Opprett hjelpetabell
+        if(a.length >1){ // Større enn null
+            for(int i = 0; i < a.length; i++){ // Gå gjennom tabellen
+                if(k < 0){// Er i+k mindre enn null (aka  negativ
+                    if(i+(k+(a.length)) >0 && i+(k+(a.length-1)) < a.length-1) {
+                        temp[i+(k+(a.length))] = a[i];
+                    } else{
+                        temp[(i+(k+(a.length)))%a.length] = a[i];
                     }
                 }else if(i+k > (a.length-1)){
-                    int u = (i+k)%(a.length-0);
+                    int u = (i+k)%(a.length);
                     temp[u] = a[i];
                 }else {
                     temp[i+k] = a[i];
@@ -340,7 +334,6 @@ hvordan metoden skal virke:
                 a[j] = temp[j];
             }
         }
-*/
     }
     
     
