@@ -689,7 +689,7 @@ public class Oblig1Test
       }
       flere2 = nestePermutasjon(a);
     }
-
+    Oblig1.tredjeMaksTest();
     return antallFeil;
   }
 

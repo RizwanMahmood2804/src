@@ -481,7 +481,7 @@ public static int[] tredjeMaks(int[] a){
         }
     } // for
 
-    return new int[] {m,nm, nnm};    // n i posisjon 0, nm i posisjon 1
+    return new int[] {m,nm, nnm};    // returnerer posisjonene til maks, nestmaks og nestnestmaks
 }
 
 /*
@@ -496,19 +496,23 @@ void tredjeMaksTest() skal være med i løsningen som sendes inn.
 
 public static void tredjeMaksTest(){
     int[] a = {8,3,5,7,9,6,10,2,1,4};  // maksverdien 10 er i posisjon 6
-
-    if (maks(a) != 6)  // kaller maks-metoden
-      System.out.println("Kodefeil: Gir feil posisjon for maksverdien!");
-
-    a = new int[0];  // en tom tabell, lengde lik 0
+    int[] ariktig={6,4,0};
+    int[] b={1,2,3};
+    int[] b2={1,3,2};
+    int[] c={2,3,1};
+    int[] c2={2,1,3};
+    int[] d={3,1,2};
+    int[] d2={3,2,1};
+    int[] treRiktig ={3,2,1};
+    int[] tom=new int[0];
+    int[] nestenTom={3,2};
+    
     boolean unntak = false;
-
-    try
-    {
-      maks(a);  // kaller maks-metoden
+    try {
+        tredjeMaks(tom);
+        tredjeMaks(nestenTom);
     }
-    catch (Exception e)
-    {
+    catch (Exception e) {
       unntak = true;
       if (!(e instanceof IllegalArgumentException))
         System.out.println("Kodefeil: Feil unntak for en tom tabell!");
@@ -516,7 +520,29 @@ public static void tredjeMaksTest(){
 
     if (!unntak)
       System.out.println("Kodefeil: Mangler unntak for en tom tabell!");
-  }
+    
+    if(!Arrays.equals(ariktig,tredjeMaks(a))|| 
+        !((treRiktig[0]== b[(tredjeMaks(b)[0])])
+            &&(treRiktig[1]== b[tredjeMaks(b)[1]])
+            &&(treRiktig[2]== b[tredjeMaks(b)[2]]))||
+        !((treRiktig[0]== b2[(tredjeMaks(b2)[0])])
+            &&(treRiktig[1]== b2[tredjeMaks(b2)[1]])
+            &&(treRiktig[2]== b2[tredjeMaks(b2)[2]]))|| 
+        !((treRiktig[0]== c[(tredjeMaks(c)[0])])
+            &&(treRiktig[1]== c[tredjeMaks(c)[1]])
+            &&(treRiktig[2]== c[tredjeMaks(c)[2]]))||
+        !((treRiktig[0]== c2[(tredjeMaks(c2)[0])])
+            &&(treRiktig[1]== c2[tredjeMaks(c2)[1]])
+            &&(treRiktig[2]== c2[tredjeMaks(c2)[2]]))||
+        !((treRiktig[0]== d[(tredjeMaks(d)[0])])
+            &&(treRiktig[1]== d[tredjeMaks(d)[1]])
+            &&(treRiktig[2]== d[tredjeMaks(d)[2]]))||
+        !((treRiktig[0]== d2[(tredjeMaks(d2)[0])])
+            &&(treRiktig[1]== d2[tredjeMaks(d2)[1]])
+            &&(treRiktig[2]== d2[tredjeMaks(d2)[2]]))) {
+        System.out.println("Den returnerer feil data!");
+    }
+}
 
 
 // Oppgave 9
