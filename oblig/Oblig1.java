@@ -192,6 +192,7 @@ Lag metoden public static int antallUlikeUsortert(int[] a). Tabellen a kan nå
     hjelpestrukturer, dvs. alt arbeidet skal foregå innenfor tabellen a. Du kan 
     selvfølgelig bruke en eller flere hjelpevariabler.
 */
+    /*
     public static int antallUlikeUsortert(int[] a){
         int antallUlike = 0;
         boolean antallU = false;
@@ -232,7 +233,32 @@ Lag metoden public static int antallUlikeUsortert(int[] a). Tabellen a kan nå
 //            antallU += antallUlike;
         return antallUlike;
     }
-
+*/
+    
+    public static int antallUlikeUsortert(int[] a){
+        int antallUlike = 0;
+        
+        if(a.length >1){
+            boolean sjekk = false;
+            antallUlike++;
+            for(int i = 1; i<a.length; i++){
+                for(int j = 0; j<i; j++){
+                    if(a[i] == a[j]){
+                        sjekk =true;
+                    }
+                }
+                if(sjekk != true){
+                    antallUlike++;
+                    sjekk=false;
+                } else{
+                    sjekk=false;
+                }
+            }        
+        }else{
+            antallUlike = a.length;
+        }
+        return antallUlike;
+    }
 // Oppgave 5
 /*
 Det kan være aktuelt å «rotere» elementene i en tabell. En rotasjon på én enhet 
@@ -510,20 +536,125 @@ a finner en verdi som er mindre enn enn den største (bakerste) i tabellen verdi
 setter du den inn på rett sortert plass. Dermed vil den som opprinnelig var 
 bakerst, forsvinne. Osv.
 */
+
+    public static int[] kMinst(int[] a, int k){
+ 
+        int arrayAlengde = a.length;
+        if(k > arrayAlengde||k < 1 )
+            throw new IllegalArgumentException("antall minsteverdi må være færre enn lengden på array og større enn 0");
+ 
+        int[] m = new int[k];
+ 
+        System.arraycopy(a, 0, m, 0, k);
+        kvikksortering(m);
+ 
+        if(arrayAlengde == k)
+            return m;
+       int laveste = m[k-1];
+        for(int i = k; i < arrayAlengde; i++){
+            int verdi = a[i];
+            
+            if(a[i]< laveste){
+                for(int j = 0; j < k; j++){
+                    if(verdi < m[j]){
+                        int temp = m[j];
+                        m[j] = verdi;
+                        verdi = temp;
+                    }
+                    laveste = m[k-1];
+                }                
+            }
+        }
+        return m;
+    }
+
+/*
 public static int[] kMinst(int[] a, int k){
     if(a.length <k) throw new IllegalArgumentException("Antall minsteverdier er større enn selve tabellen");
     if(k <1) throw new IllegalArgumentException("Du må be om minst 1 verdi å vise!");
     
     int[] verdier = new int[k];
-    for(int i =0; i<k;i++){
-        verdier[i] = a[i];
-    }
+    System.arraycopy(a, 0, verdier, 0, k);
     
-    for(int i =0; i<a.length-1; i++){
+    kvikksortering(verdier);    
+    for(int i = k; i<a.length;i++){
+        if(a[i]<verdier[k-1]){
+            for(int j=verdier.length-1; j>0; j--){
+                if(verdier[j] > a[i]){
+                    int temp = verdier[j];
+                    
+                    verdier[j] = a[i];
+                    for(int u = j+1; u<verdier.length-1; u++){
+                        int temp2 = verdier[u];
+                        verdier[u] = temp;
+                        if(u <(verdier.length-1))
+                        temp = verdier[u+1];
+                    }
+                       // Alt fra dette punktet og utover skal flyttes en plass bak
+                }
+            }
+        }
     }
-    
     return verdier;
 }
+*/
+  public static int parter(int[] a, int v, int h, int skilleverdi)
+  {
+    while (v <= h && a[v] < skilleverdi) v++;   // h er stoppverdi for v
+    while (v <= h && skilleverdi <= a[h]) h--;  // v er stoppverdi for h
+
+    while (true)
+    {
+      if (v < h) bytt(a,v++,h--);   // bytter om a[v] og a[h]
+      else  return v;                      // partisjoneringen er ferdig
+      while (a[v] < skilleverdi) v++;      // flytter v mot høyre
+      while (skilleverdi <= a[h]) h--;     // flytter h mot venstre
+    }
+  }
+
+  public static int parter(int[] a, int skilleverdi)
+  {
+    return parter(a,0,a.length-1,skilleverdi);  // kaller metoden over
+  }    
+    
+  public static int sParter(int[] a, int v, int h, int indeks)
+  {
+    if (indeks < v || indeks > h) throw new IllegalArgumentException();
+
+    bytt(a,h,indeks);
+    int k = parter(a,v,h-1,a[h]);
+    bytt(a,h,k);
+    return k;
+  }
+
+  public static int sParter(int[] a, int k)   // bruker hele tabellen
+  {
+    return sParter(a,0,a.length-1,k);   // v = 0 og h = a.lenght - 1
+  }
+
+  public static void kvikksortering(int[] a)
+  {
+    kvikksortering(a, 0, a.length - 1);
+  }
+
+  private static void kvikksortering(int[] a, int v, int h)
+  {
+    if (v >= h) return;
+
+    int m = (v + h)/2;
+
+    int p = sParter(a, v, h, m);
+
+    kvikksortering(a, v, p - 1);
+    kvikksortering(a, p + 1, h);
+  }
+
+  public static void bytt(int[] a, int i, int j)
+  {
+    int temp = a[i]; a[i] = a[j]; a[j] = temp;
+  }
+
+
 // Oppgave 10
 /*
 Vi sier at et ord er inneholdt i et annet ord hvis hver bokstav i det første 
@@ -541,6 +672,37 @@ av bokstaver. Et «tomt» ord (en tom tegnstreng) er innholdt i alle andre ord
 så effektiv som mulig.
 */    
     public static boolean inneholdt(String a, String b){
-        return true;
+
+        int[] aL = new int[29];
+        int[] bL = new int[29];
+        lagBokstav(a,aL);
+        lagBokstav(b,bL);        
+        boolean ordOk = true;
+        
+        if(a.equals(b) || a.length() == 0){
+            return ordOk;
+        } else {
+            for(int i = 0; i <aL.length-1; i++){
+                if(aL[i] > bL[i]){
+                    ordOk = false;
+                }
+            }
+            return ordOk;
+        }
+        
     }
+    
+    public static void lagBokstav(String ord, int[] listen){
+        char[] bokstaver = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','Æ','Ø','Å'};
+        
+        for(int i = 0; i<ord.length(); i++){
+            for(int j = 0; j<bokstaver.length-1;j++){
+                char temp = (char) ord.charAt(i);
+                if(bokstaver[j] == temp){
+                listen[j]++;
+                }
+            }
+        }    
+    }
+    
 }

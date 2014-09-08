@@ -18,7 +18,9 @@ public class Oblig1Test
     antallFeil += oppgave8();
     antallFeil += oppgave9();
     antallFeil += oppgave10();
-
+//    int[] rekke = {1,2,1,3,3};
+//    System.out.println("Dette er tabellen: "+Oblig1.antallUlikeUsortert(rekke));
+    
     if (antallFeil == 0)
     {
       System.out.println("Gratulerer!! Du passerte testen!");
@@ -755,6 +757,7 @@ public class Oblig1Test
         !Arrays.equals(e,Oblig1.kMinst(a,4))||
         !Arrays.equals(f,Oblig1.kMinst(a,a.length)))
     {
+        System.out.println("Array som skal ut: "+Arrays.toString(Oblig1.kMinst(a,1)));
       System.out.println("Oppgave 9: e) Metoden gir feil resultat!");
       antallFeil++;
     }
@@ -778,9 +781,9 @@ public class Oblig1Test
     long tid = System.currentTimeMillis();
     Oblig1.kMinst(x, 10000);
     tid = System.currentTimeMillis() - tid;
-
     if (tid > 200)
     {
+        System.out.println("Tid:"+tid);
       System.out.println
         ("Oppgave 9: h) Metoden er altfor ineffektiv!");
       antallFeil++;
@@ -797,7 +800,6 @@ public class Oblig1Test
         ("Oppgave 9: i) Metoden er altfor ineffektiv!");
       antallFeil++;
     }
-
     return antallFeil;
   }
 
