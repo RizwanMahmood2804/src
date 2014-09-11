@@ -21,6 +21,7 @@ public class Oblig1Test
 //    int[] rekke = {1,2,1,3,3};
 //    System.out.println("Dette er tabellen: "+Oblig1.antallUlikeUsortert(rekke));
     
+    
     if (antallFeil == 0)
     {
       System.out.println("Gratulerer!! Du passerte testen!");

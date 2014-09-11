@@ -19,8 +19,5 @@ public class AlgData {
      */
     public static void main(String... args) {
 
-        int[] a = {10,9,8,3,5,4,3,2,6,7,4,23};
-        System.out.println(Arrays.toString(Oblig1.tredjeMaks(a))) ;
-
      }
 }
