@@ -12,25 +12,12 @@ import java.util.NoSuchElementException;
 public class Oblig1 {
 
 // Oppgave 1
+    
 /*
-Lag metoden public static int maks(int[] a). Den skal finne og returnere den 
-    største verdien (ikke posisjonen) i parametertabellen a og den skal bruke 
-    flg. teknikk: Sammenlign først a[0] og a[1]. Hvis a[0] > a[1], så bytter de 
-    to verdiene plass. Sammenlign så a[1] og a[2]. Hvis a[1] > a[2], bytter de 
-    to plass. Osv. Når denne prosessen er ferdig vil tabellens største verdi 
-    ligge bakerst (sjekk at det stemmer). Dermed kan den verdien returneres. 
-    Det skal kastes en NoSuchElementException (med en passende tekst) hvis 
-    tabellen a er tom.
-
-La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
-
-Antall ombyttinger vil være avhengig av hvordan verdiene ligger. Når blir det 
-    færrest ombyttinger? Når blir det flest ombyttinger? Finn hvor mange 
-    ombyttinger det blir i gjennomsnitt for en tabell med n forskjellige verdier.
-    Her kan du lage kode som teller opp ombyttingene. Det kan gi deg en 
-    indikasjon på hvor mange det blir i gjennomsnitt. Er dette en god metode for 
-    å finne den største verdien i en tabell?
-*/
+    Det er bare en tabellaksess, og det er jo forsåidt bra for hurtighet. Jo mer
+    sortert i stigende rekkefølgen tabellen er jo færre bytter, men er den lite 
+    sortert vil den kreve mange bytter.
+*/    
 
     public static int maks(int[] a){
         if(a.length < 1) throw new NoSuchElementException("Du har en tom tabell. Det er ikke noe å sortere.");
@@ -53,25 +40,21 @@ Antall ombyttinger vil være avhengig av hvordan verdiene ligger. Når blir det
         return maks;
     }
 
-    /*
-    Det er bare en tabellaksess, og det er jo forsåidt bra for hurtighet. Jo mer
-    sortert i stigende rekkefølgen tabellen er jo færre bytter, men er den lite 
-    sortert vil den kreve mange bytter.
-    */
+
     
 // Oppgave 2
-/*
-Lag metoden public static void sortering(int[] a). Den skal sortere 
-    paramtertabellen a ved å bruke idéen i Oppgave 1 gjentatte ganger. Idéen 
-    gjør at den største verdien havner bakerst. Så gjentas dette slik at nest 
-    største verdi (dvs. den største av de gjenværende) havner nest bakerst. Osv. 
-    Unngå unødvendige sammenligninger. OBS: En tabell som er tom eller har kun 
-    ett element, er allerede sortert. Med andre ord utgjør ikke det noen 
-    feilsituasjoner.
 
-La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det? 
-    Oppgi det som en funksjon av n. Hvilken orden har metoden?
+/*
+    Antall sorteringer; 
+    F.eks. er det 10 tall som skal gås gjennom, vil det være 9 
+    sorteringer/sammenlikninger første gang, 8 andre gang, 7 tredje gang osv.. 
+    Så da kan man bruke formelen for aritemtisk rekke.
+    n = hvor mange tall i rekken
+    n-1 = antall sorteringer 
+    (synkende tall, færre tall å sortere gir færre sorteringer)
+    ((n-1)(n))/2
 */
+    
     public static void sortering(int[] a){
         if(a.length >1){
         int maks = 0;
@@ -90,16 +73,7 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
         }
     }
 
-    /*
-    Antall sorteringer; 
-    F.eks. er det 10 tall som skal gås gjennom, vil det være 9 
-    sorteringer/sammenlikninger første gang, 8 andre gang, 7 tredje gang osv.. 
-    Så da kan man bruke formelen for aritemtisk rekke.
-    n = hvor mange tall i rekken
-    n-1 = antall sorteringer 
-    (synkende tall, færre tall å sortere gir færre sorteringer)
-    ((n-1)(n))/2
-    */
+
     
 // Oppgave 3
     public static int antallUlikeSortert(int[] a){
@@ -123,9 +97,7 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
     }
         
 // Oppgave 4
-
-    
-    public static int antallUlikeUsortert(int[] a){
+   public static int antallUlikeUsortert(int[] a){
         int antallUlike = 0;
         
         if(a.length >1){
@@ -151,7 +123,6 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
     }
 
 // Oppgave 5
-
     public static void rotasjon(char[] a){
         char temp;
         if(a.length >1){
@@ -165,7 +136,6 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
 
     
 // Oppgave 6
-
     public static void rotasjon(char[] a, int k){
         char[] temp = new char[a.length]; // Opprett hjelpetabell
         if(a.length >1){ // Større enn null
@@ -418,7 +388,7 @@ La tabellen ha lengde n. Hvor mange sammenligninger av tabellverdier blir det?
         }    
     }
 
-    // Metoder fra tabell-klassen
+// Metoder fra tabell-hjelpeklassen/undervisningen
     
 
   public static int parter(int[] a, int v, int h, int skilleverdi)
