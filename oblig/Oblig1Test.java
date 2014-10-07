@@ -1,5 +1,4 @@
 package oblig;
-
 import java.util.*;
 
 public class Oblig1Test
@@ -13,15 +12,12 @@ public class Oblig1Test
     antallFeil += oppgave3();
     antallFeil += oppgave4();
     antallFeil += oppgave5();
-    antallFeil += oppgave6();
+     antallFeil += oppgave6();
     antallFeil += oppgave7();
     antallFeil += oppgave8();
     antallFeil += oppgave9();
     antallFeil += oppgave10();
-//    int[] rekke = {1,2,1,3,3};
-//    System.out.println("Dette er tabellen: "+Oblig1.antallUlikeUsortert(rekke));
-    
-    
+
     if (antallFeil == 0)
     {
       System.out.println("Gratulerer!! Du passerte testen!");
@@ -215,7 +211,6 @@ public class Oblig1Test
         || Oblig1.antallUlikeUsortert(d) != 6
         || Oblig1.antallUlikeUsortert(e) != 5
         || Oblig1.antallUlikeUsortert(f) != 3)
-
     {
       System.out.println("Oppgave 4: b) Metoden gir feil resultat!");
       antallFeil++;
@@ -379,7 +374,7 @@ public class Oblig1Test
 
     if (tid > 20)
     {
-      System.out.println("Oppgave 8: j) Metoden "
+      System.out.println("Oppgave 6: j) Metoden "
         + "er for ineffektiv. Må forbedres!");
       antallFeil++;
     }
@@ -390,7 +385,7 @@ public class Oblig1Test
 
     if (tid > 20)
     {
-      System.out.println("Oppgave 8: k) Metoden "
+      System.out.println("Oppgave 6: k) Metoden "
         + "er for ineffektiv. Må forbedres!");
       antallFeil++;
     }
@@ -401,7 +396,7 @@ public class Oblig1Test
 
     if (tid > 20)
     {
-      System.out.println("Oppgave 8: l) Metoden "
+      System.out.println("Oppgave 6: l) Metoden "
         + "er for ineffektiv. Må forbedres!");
       antallFeil++;
     }
@@ -646,6 +641,7 @@ public class Oblig1Test
       {
         System.out.println("Oppgave 8: c) Feil når a = " + Arrays.toString(a1));
         antallFeil++;
+        break;
       }
       flere1 = nestePermutasjon(a1);
     }
@@ -690,7 +686,7 @@ public class Oblig1Test
       }
       flere2 = nestePermutasjon(a);
     }
-    Oblig1.tredjeMaksTest();
+
     return antallFeil;
   }
 
@@ -759,7 +755,6 @@ public class Oblig1Test
         !Arrays.equals(e,Oblig1.kMinst(a,4))||
         !Arrays.equals(f,Oblig1.kMinst(a,a.length)))
     {
-        System.out.println("Array som skal ut: "+Arrays.toString(Oblig1.kMinst(a,1)));
       System.out.println("Oppgave 9: e) Metoden gir feil resultat!");
       antallFeil++;
     }
@@ -783,6 +778,7 @@ public class Oblig1Test
     long tid = System.currentTimeMillis();
     Oblig1.kMinst(x, 10000);
     tid = System.currentTimeMillis() - tid;
+
     if (tid > 200)
     {
       System.out.println
@@ -801,6 +797,7 @@ public class Oblig1Test
         ("Oppgave 9: i) Metoden er altfor ineffektiv!");
       antallFeil++;
     }
+
     return antallFeil;
   }
 
@@ -900,36 +897,53 @@ public class Oblig1Test
         antallFeil++;
     }
 
-    char[] x = new char[10000];
-    for (int i = 0; i < 5000; i++)
+    b = Oblig1.inneholdt("ØÅÅØ", "ØØÅØØ");
+    if (b != false)
+    {
+      System.out.println
+        ("Oppgave 10: i) Svaret skal bli lik false her!");
+        antallFeil++;
+    }
+
+    b = Oblig1.inneholdt("ØÅÅØ", "ÅØØÅØ");
+    if (b == false)
+    {
+      System.out.println
+        ("Oppgave 10: j) Svaret skal bli lik true her!");
+        antallFeil++;
+    }
+
+
+    char[] x = new char[100000];
+    for (int i = 0; i < 50000; i++)
     {
       x[2*i] = 'X'; x[2*i + 1] = 'Y';
     }
     String t = String.copyValueOf(x);
 
-    char[] y = new char[10000];
-    for (int i = 0; i < 4999; i++)
+    char[] y = new char[100000];
+    for (int i = 0; i < 49999; i++)
     {
       y[2*i] = 'X'; y[2*i + 1] = 'Y';
     }
-    y[9998] = 'Z'; y[9999] = 'Z';
+    y[99998] = 'Z'; y[99999] = 'Z';
     String s = String.copyValueOf(y);
 
     long tid = System.currentTimeMillis();
     b = Oblig1.inneholdt(s, t);
     tid = System.currentTimeMillis() - tid;
 
-    if (tid > 20)
+    if (tid > 100)
     {
       System.out.println
-        ("Oppgave 10: i) Dette gikk sakte! Finn en bedre algoritme!");
+        ("Oppgave 10: k) Dette (" + tid + " ms) gikk sakte! Finn en bedre algoritme!");
         antallFeil++;
     }
 
     if (b != false)
     {
       System.out.println
-        ("Oppgave 10: i) Svaret skal bli lik false her!");
+        ("Oppgave 10: l) Svaret skal bli lik false her!");
         antallFeil++;
     }
     return antallFeil;

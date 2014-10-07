@@ -365,7 +365,7 @@ public class Oblig1 {
         if(a.equals(b) || a.length() == 0){
             return ordOk;
         } else {
-            for(int i = 0; i <aL.length-1; i++){
+            for(int i = 0; i <aL.length; i++){
                 if(aL[i] > bL[i]){
                     ordOk = false;
                 }
@@ -379,7 +379,7 @@ public class Oblig1 {
         char[] bokstaver = {'A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','X','Y','Z','Æ','Ø','Å'};
         
         for(int i = 0; i<ord.length(); i++){
-            for(int j = 0; j<bokstaver.length-1;j++){
+            for(int j = 0; j<bokstaver.length;j++){
                 char temp = (char) ord.charAt(i);
                 if(bokstaver[j] == temp){
                 listen[j]++;
