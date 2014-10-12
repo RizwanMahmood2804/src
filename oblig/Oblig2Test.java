@@ -7,13 +7,13 @@ public class Oblig2Test
   public static void main(String[] args)
   {
     int antallFeil = 0;
-
-    //antallFeil += oppgave1();
-    //antallFeil += oppgave2();
-    //antallFeil += oppgave3();
-    //antallFeil += oppgave4();
-    //antallFeil += oppgave5();
-    //antallFeil += oppgave6();
+//    selvTest1();
+    antallFeil += oppgave1();
+    antallFeil += oppgave2();
+    antallFeil += oppgave3();
+    antallFeil += oppgave4();
+    antallFeil += oppgave5();
+    antallFeil += oppgave6();
     //antallFeil += oppgave7();
     //antallFeil += oppgave8();
     //antallFeil += oppgave9();
@@ -28,8 +28,59 @@ public class Oblig2Test
       System.out.println
         ("Dette må forbedres. Du har minst " + antallFeil + " feil!");
     }
+    
   }
 
+  private static void selvTest1(){
+      DobbeltLenketListe<Integer> liste = new DobbeltLenketListe<>();
+      selvTest2(liste);
+      sjekkAntall(liste);
+      tomListe(liste);
+      System.out.println(liste.leggInn(1));
+      selvTest2(liste);
+      sjekkAntall(liste);
+      tomListe(liste);
+      liste.leggInn(2);
+      liste.leggInn(3);
+      liste.leggInn(4);
+      liste.leggInn(5);
+      liste.leggInn(6);
+      liste.leggInn(7);
+      liste.leggInn(8);
+      liste.leggInn(9);
+      sjekkAntall(liste);
+      tomListe(liste);
+      System.out.println("Antall endringer: "+liste.antallEndringer());
+      
+      selvTest2(liste);
+      selvTest5(liste);
+  }
+
+  private static void selvTest2(DobbeltLenketListe liste){
+        System.out.println("Listen er nå:"+ liste);
+        System.out.println("Listen baklengs:"+ liste.omvendtString());
+  }
+  
+  private static void sjekkAntall(Liste liste){
+      System.out.println("Antall elementer: "+liste.antall());
+  }
+  private static void tomListe(Liste liste){
+      if(liste.tom()){
+          System.out.println("Listen er tom!");
+      } else{
+          System.out.println("Listen er ikke tom");
+      }
+  }
+  
+  private static void selvTest5(DobbeltLenketListe liste){
+      liste.leggInn(1, 120);
+      System.out.println("Antall: "+liste.antall());;
+      System.out.println("LIste:"+liste.toString());
+      liste.leggInn(6, 120);
+      System.out.println("Antall: "+liste.antall());;
+      System.out.println("LIste:"+liste.toString());      
+  }
+  
   ////// Oppgave 1 /////////////////////
 
   public static int oppgave1()
