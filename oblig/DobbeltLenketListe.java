@@ -1,139 +1,116 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+    Kristoffer Johansen
+    s193370
+    HiNGDATA13H2AA
  */
 
 package oblig;
 
-/**
- *
- * @author kristofferjohansen
- */
 import java.util.*;
 import java.util.function.*;
 
-public class DobbeltLenketListe<T> implements Liste<T>
-{
-  private static final class Node<T>   // en indre nodeklasse
-  {
+public class DobbeltLenketListe<T> implements Liste<T> {
+    private static final class Node<T> {  // en indre nodeklasse
+    
+        // instansvariabler
+        private T verdi;
+        private Node<T> forrige, neste;
+
+        // konstruktør
+        private Node(T verdi, Node<T> forrige, Node<T> neste) {
+            this.verdi = verdi;
+            this.forrige = forrige;
+            this.neste = neste;
+        }
+    }
+
     // instansvariabler
-    private T verdi;
-    private Node<T> forrige, neste;
+    private Node<T> hode;          // peker til den første i listen
+    private Node<T> hale;          // peker til den siste i listen
+    private int antall;            // antall noder i listen
+    private int antallEndringer;   // antall endringer i listen
+
+    // hjelpemetode
+    private void indeksKontroll(int indeks) {
+        if (indeks < 0) {
+            throw new IndexOutOfBoundsException("Indeks " +
+                indeks + " er negativ!");
+        }
+        else if (indeks >= antall) {
+            throw new IndexOutOfBoundsException("Indeks " +
+                indeks + " >= antall(" + antall + ") noder!");
+        }
+    }
+
+    // hjelpemetode
+    private Node<T> finnNode(int indeks) {
+
+        Node<T> peker = null;
+        if(indeks == 0)
+            return hode;
+        if(indeks < antall && indeks >0){
+            if(indeks < antall/2){
+                peker = hode;
+                for (int i = 0; i < indeks; i++) peker = peker.neste;        
+            } else {
+                peker = hale;
+                for(int i = antall-1; i > indeks; i--) peker = peker.forrige;
+            }
+        }
+        return peker;
+    }
 
     // konstruktør
-    private Node(T verdi, Node<T> forrige, Node<T> neste)
-    {
-      this.verdi = verdi;
-      this.forrige = forrige;
-      this.neste = neste;
+    public DobbeltLenketListe() {
+        hode = hale = null;
+        antall = 0;
+        antallEndringer = 0;
     }
-  }
 
-  // instansvariabler
-  private Node<T> hode;          // peker til den første i listen
-  private Node<T> hale;          // peker til den siste i listen
-  private int antall;            // antall noder i listen
-  private int antallEndringer;   // antall endringer i listen
-
-  // hjelpemetode
-  private void indeksKontroll(int indeks)
-  {
-    if (indeks < 0)
-    {
-      throw new IndexOutOfBoundsException("Indeks " +
-        indeks + " er negativ!");
+    @Override
+    public int antall() {
+        return antall;
     }
-    else if (indeks >= antall)
-    {
-      throw new IndexOutOfBoundsException("Indeks " +
-        indeks + " >= antall(" + antall + ") noder!");
-    }
-  }
-
-  // hjelpemetode
-  private Node<T> finnNode(int indeks)
-  {
-      
-      Node<T> peker = null;
-      if(indeks == 0)
-          return hode;
-      if(indeks < antall && indeks >0){
-        if(indeks < antall/2){
-            peker = hode;
-            for (int i = 0; i < indeks; i++) peker = peker.neste;        
-        } else {
-            peker = hale;
-            for(int i = antall-1; i > indeks; i--) peker = peker.forrige;
-        }
-      }
-    return peker;
-  }
-
-  // konstruktør
-  public DobbeltLenketListe()
-  {
-    hode = hale = null;
-    antall = 0;
-    antallEndringer = 0;
-  }
-
-  @Override
-  public int antall()
-  {
-      return antall;
-  }
  
-  public int antallEndringer(){
-      return antallEndringer;
-  }
+    public int antallEndringer(){
+        return antallEndringer;
+    }
   
-  @Override
-  public boolean tom()
-  {
-    return  antall == 0;
-  }
-
-  @Override
-  public boolean leggInn(T verdi)
-  {
-    if (verdi == null)
-    {
-      throw new NullPointerException("Ikke tillatt med null-verdier!");
+    @Override
+    public boolean tom() {
+        return  antall == 0;
     }
 
-    if (antall == 0)           // sjekker om listen er tom
-    {
-      hode = hale = new Node<>(verdi,null, null);
+    @Override
+    public boolean leggInn(T verdi) {
+    if (verdi == null) {
+        throw new NullPointerException("Ikke tillatt med null-verdier!");
     }
-    else
-    {
-      hale = hale.neste = new Node<>(verdi,hale, null);  // legges bakerst
+    if (antall == 0){           // sjekker om listen er tom
+        hode = hale = new Node<>(verdi,null, null);
+    } else {
+        hale = hale.neste = new Node<>(verdi,hale, null);  // legges bakerst
     }
 
     antallEndringer++;         // en ny endring
     antall++;                  // en mer i listen
 
     return true;               // vellykket innlegging
-  }
-
-  @Override
-  public void leggInn(int indeks, T verdi)
-  {
-    if (verdi == null)
-    {
-      throw new NullPointerException
-        ("Ikke tillatt med null-verdier!");
-    }  
-    if (indeks < 0 || indeks > antall)
-    {
-      throw new IndexOutOfBoundsException
-        ("Indeks(" + indeks + ") er ulovlig!");
     }
+
+    @Override
+    public void leggInn(int indeks, T verdi) {
+        if (verdi == null) {
+            throw new NullPointerException
+                ("Ikke tillatt med null-verdier!");
+        }  
+        if (indeks < 0 || indeks > antall) {
+            throw new IndexOutOfBoundsException
+                ("Indeks(" + indeks + ") er ulovlig!");
+        }
         Node hp = null;
         
         if(indeks == 0){
-
             if(antall == 0)
                 hale=hode=new Node<>(verdi, null, null);
             else{
@@ -146,86 +123,78 @@ public class DobbeltLenketListe<T> implements Liste<T>
         } else {
             Node<T> p = hode;    // må telle fra hode og til indeks - 1
             for (int i = 1; i < indeks; i++)
-            {
               p = p.neste;
-            }
             p.neste = new Node<>(verdi,p, p.neste);  // ny node settes på rett plass
             p.neste.neste.forrige = p.neste;
         }
         antall++;
         antallEndringer++;
-  }
+    }
 
-  @Override
-  public boolean inneholder(T verdi)
-  {
-      if(indeksTil(verdi) != -1){
-          return true;
-      }
-      else return false;
-  }
-
-
-  @Override
-  public T hent(int indeks)
-  {
-      indeksKontroll(indeks);
-      return finnNode(indeks).verdi;
-      
-  }
-
-  @Override
-  public int indeksTil(T verdi)
-  {
-      Node peker = hode;
-      int indeks = -1;
-      for(int i=0; i<antall;i++){
-          if(peker.verdi.equals(verdi)){
-              indeks = i;
-              break;
-          }
-          peker = peker.neste;
-      }
-      return indeks;    
-  }
-
-  @Override
-  public T oppdater(int indeks, T nyverdi)
-  {
-      indeksKontroll(indeks);
-      if(nyverdi == null)throw new NullPointerException("Ikke tillatt med nullverdier");
-      Node<T> peker = finnNode(indeks);
-      T gammelverdi = peker.verdi;
-      peker.verdi = nyverdi;
-      antallEndringer++;
-      return gammelverdi;
-  }
-
-  @Override
-  public boolean fjern(T verdi)
-  {
-      boolean returverdi = false;
-      if(verdi != null){      
-        if(antall == 0) throw new IndexOutOfBoundsException("Tabellen er tom");
-        if(inneholder(verdi)) {
-          Node<T> peker = hode;
-          if(peker.verdi.equals(verdi)){
-              fjern(0).equals(verdi);
-              returverdi = true;
-          } else{
-              for(int i = 1; i<antall; i++){
-                  if(peker.neste.verdi.equals(verdi)){                
-                      fjern(i).equals(verdi);
-                      returverdi = true;
-                  }
-                  if(i != antall-1)
-                  peker = peker.neste;
-              }        
-          }
+    @Override
+    public boolean inneholder(T verdi) {
+        if(indeksTil(verdi) != -1){
+            return true;
         }
-      } 
-      return returverdi;
-  }
+        else return false;
+    }
+
+
+    @Override
+    public T hent(int indeks) {
+        indeksKontroll(indeks);
+        return finnNode(indeks).verdi;
+    }
+
+    @Override
+    public int indeksTil(T verdi) {
+        Node peker = hode;
+        int indeks = -1;
+        for(int i=0; i<antall;i++){
+            if(peker.verdi.equals(verdi)){
+                indeks = i;
+                break;
+            }
+            peker = peker.neste;
+        }
+        return indeks;    
+    }
+
+    @Override
+    public T oppdater(int indeks, T nyverdi) {
+        indeksKontroll(indeks);
+        if(nyverdi == null)throw new NullPointerException("Ikke tillatt med nullverdier");
+        Node<T> peker = finnNode(indeks);
+        T gammelverdi = peker.verdi;
+        peker.verdi = nyverdi;
+        antallEndringer++;
+        return gammelverdi;
+    }
+
+    @Override
+    public boolean fjern(T verdi) {
+        boolean returverdi = false;
+        if(verdi != null){      
+            if(antall == 0) throw new IndexOutOfBoundsException("Tabellen er tom");
+            if(inneholder(verdi)) {
+                Node<T> peker = hode;
+                if(peker.verdi.equals(verdi)){
+                    fjern(0).equals(verdi);
+                    returverdi = true;
+                } else{
+                    for(int i = 1; i<antall; i++){
+                        if(peker.neste.verdi.equals(verdi)){                
+                            fjern(i).equals(verdi);
+                            returverdi = true;
+                        }
+                        if(i != antall-1)
+                        peker = peker.neste;
+                    }        
+                }
+            }
+        } 
+        return returverdi;
+    }
 
     @Override
     public T fjern(int indeks) {
@@ -255,14 +224,13 @@ public class DobbeltLenketListe<T> implements Liste<T>
         return returverdi;
     }
 
-  @Override
-  public void nullstill()
-  {
-      hode = null;
-      hale = null;
-      antall = 0;
-      antallEndringer++;
-  }
+    @Override
+    public void nullstill() {
+        hode = null;
+        hale = null;
+        antall = 0;
+        antallEndringer++;
+    }
     
     @Override
     public void forEach(Consumer<? super T> handling) {
@@ -278,148 +246,130 @@ public class DobbeltLenketListe<T> implements Liste<T>
             }
         }
     }
-
-    
-  @Override
-  public String toString()
-  {
-      StringBuilder sb = new StringBuilder();
-      sb.append("[");
-      Node peker = hode;
-      if(peker != null)
-          sb.append(peker.verdi);
-      while(peker !=null && peker.neste !=null){
-//          System.out.println("Peker.neste.verdi"+peker.neste.verdi);
-          sb.append(", "+peker.neste.verdi);
-          peker = peker.neste;
-      }
-      sb.append("]");
-      return sb.toString();
-  }
-
-  public String omvendtString()
-  {
-      StringBuilder sb = new StringBuilder();
-      sb.append("[");
-      Node peker = hale;
-      if(peker!=null)
-          sb.append(peker.verdi);
-      while(peker!=null && peker.forrige!=null){
-        sb.append(", "+peker.forrige.verdi);
-        peker = peker.forrige;
-      }
-      sb.append("]");
-      return sb.toString();
-  }
-
-  @Override
-  public Iterator<T> iterator()
-  {
-    return new DobbeltLenketListeIterator();
-  }
-
-  public Iterator<T> iterator(int indeks)
-  {
-    return new DobbeltLenketListeIterator(indeks);
-  }
-
-  private class DobbeltLenketListeIterator implements Iterator<T>
-  {
-    private Node<T> denne;
-    private boolean fjernOK;
-    private int forventetAntallEndringer;
-
-    private DobbeltLenketListeIterator()
-    {
-      denne = hode;     // denne starter på den første i listen
-      fjernOK = false;  // blir sann når next() kalles
-      forventetAntallEndringer = antallEndringer;  // teller endringer
-    }
-
-    private DobbeltLenketListeIterator(int indeks)
-    {
-        indeksKontroll(indeks);
-        denne = finnNode(indeks);     // denne starter på den første i listen
-        fjernOK = false;  // blir sann når next() kalles
-        forventetAntallEndringer = antallEndringer;  // teller endringer
-    }
     
     @Override
-    public void forEachRemaining(Consumer<? super T> handling){
-        if(handling == null) throw new NullPointerException("Du må ha en handling!");    
-        if(antall != 0){
-            if(denne == null)
-                throw new NullPointerException("Verdien finnes ikke!");
-            handling.accept(denne.verdi);
-            while(denne.neste != null){
-                handling.accept(denne.neste.verdi);
-                denne = denne.neste;
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node peker = hode;
+        if(peker != null)
+            sb.append(peker.verdi);
+        while(peker !=null && peker.neste !=null){
+            sb.append(", "+peker.neste.verdi);
+            peker = peker.neste;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    public String omvendtString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node peker = hale;
+        if(peker!=null)
+            sb.append(peker.verdi);
+        while(peker!=null && peker.forrige!=null){
+          sb.append(", "+peker.forrige.verdi);
+          peker = peker.forrige;
+        }
+        sb.append("]");
+        return sb.toString();
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return new DobbeltLenketListeIterator();
+    }
+
+    public Iterator<T> iterator(int indeks) {
+        return new DobbeltLenketListeIterator(indeks);
+    }
+
+    private class DobbeltLenketListeIterator implements Iterator<T> {
+        private Node<T> denne;
+        private boolean fjernOK;
+        private int forventetAntallEndringer;
+
+        private DobbeltLenketListeIterator() {
+            denne = hode;     // denne starter på den første i listen
+            fjernOK = false;  // blir sann når next() kalles
+            forventetAntallEndringer = antallEndringer;  // teller endringer
+        }
+
+        private DobbeltLenketListeIterator(int indeks) {
+            indeksKontroll(indeks);
+            denne = finnNode(indeks);     // denne starter på den første i listen
+            fjernOK = false;  // blir sann når next() kalles
+            forventetAntallEndringer = antallEndringer;  // teller endringer
+        }
+        
+        @Override
+        public void forEachRemaining(Consumer<? super T> handling){
+            if(handling == null) throw new NullPointerException("Du må ha en handling!");    
+            if(antall != 0){
+                if(denne == null)
+                    throw new NullPointerException("Verdien finnes ikke!");
+                handling.accept(denne.verdi);
+                while(denne.neste != null){
+                    handling.accept(denne.neste.verdi);
+                    denne = denne.neste;
+                }
             }
+        }    
+
+        @Override
+        public boolean hasNext() {
+            return denne != null;
         }
-    }    
 
-    @Override
-    public boolean hasNext()
-    {
-      return denne != null;
-    }
-
-    @Override
-    public T next()
-    {
-        if (antallEndringer != forventetAntallEndringer)
-        {
-          throw new ConcurrentModificationException("Listen er endret!");
+        @Override
+        public T next() {
+            if (antallEndringer != forventetAntallEndringer) {
+                throw new ConcurrentModificationException("Listen er endret!");
+            }
+            if (!hasNext()) {
+                throw new NoSuchElementException("Tomt eller ingen flere verdier!");
+            }
+            fjernOK = true;            // nå kan remove() kalles
+            T denneVerdi = denne.verdi;    // tar vare på verdien i p
+            denne = denne.neste;               // flytter p til den nestenoden
+            return denneVerdi;         // returnerer verdien
         }
-        if (!hasNext())
-        {
-          throw new NoSuchElementException("Tomt eller ingen flere verdier!");
-        }
-        fjernOK = true;            // nå kan remove() kalles
-        T denneVerdi = denne.verdi;    // tar vare på verdien i p
-        denne = denne.neste;               // flytter p til den nestenoden
-        return denneVerdi;         // returnerer verdien
-    }
 
-    @Override
-    public void remove()
-    {
-        if(fjernOK == false)
-            throw new IllegalStateException("Det er ikke lov å fjerne denne");
-        if(forventetAntallEndringer != antallEndringer)
-            throw new ConcurrentModificationException("Det er ulike antall endringer");
-        fjernOK = false;               // remove() kan ikke kalles på nytt
-        Node<T> q = hode;              // hjelpepeker
+        @Override
+        public void remove() {
+            if(fjernOK == false)
+                throw new IllegalStateException("Det er ikke lov å fjerne denne");
+            if(forventetAntallEndringer != antallEndringer)
+                throw new ConcurrentModificationException("Det er ulike antall endringer");
+            fjernOK = false;               // remove() kan ikke kalles på nytt
+            Node<T> q = hode;              // hjelpepeker
 
-        if (hode.neste == denne)           // skal den første fjernes?
-        {
-          hode = hode.neste;           // den første fjernes
-        }
-        else
-        {
-          // må finne forgjengeren til forgjengeren til p
+            if (hode.neste == denne){           // skal den første fjernes?
+                hode = hode.neste;           // den første fjernes
+            } else {
+                // må finne forgjengeren til forgjengeren til p
 
-          Node<T> r = hode;
-          Node<T> s = null;
-          while (r.neste.neste != denne)
-          {
-            s = r;
-            r = r.neste;               // flytter r
-          }
-          r.forrige = s;
-          q = r.neste;                 // det er q som skal fjernes
-          r.neste = denne;                 // "hopper" over q
-          if(s != null)
-          hale = s.neste;
-        }
-        q.verdi = null;                // nuller verdien i noden
-        q.neste = null;                // nuller nestepeker
+                Node<T> r = hode;
+                Node<T> s = null;
+                while (r.neste.neste != denne) {
+                    s = r;
+                    r = r.neste;               // flytter r
+                }
+                r.forrige = s;
+                q = r.neste;                 // det er q som skal fjernes
+                r.neste = denne;                 // "hopper" over q
+                if(s != null)
+                hale = s.neste;
+            }
+            q.verdi = null;                // nuller verdien i noden
+            q.neste = null;                // nuller nestepeker
 
-        antallEndringer++;             // en ny endring i treet
-        forventetAntallEndringer++;    // en lokal endring
-        antall--;                      // en node mindre i listen
-    }
-
-  } // DobbeltLenketListeIterator  
+            antallEndringer++;             // en ny endring i treet
+            forventetAntallEndringer++;    // en lokal endring
+            antall--;                      // en node mindre i listen
+        } // Remove
+        
+    } // DobbeltLenketListeIterator  
 
 } // DobbeltLenketListe  
