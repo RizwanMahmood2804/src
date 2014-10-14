@@ -14,9 +14,9 @@ public class Oblig2Test
     antallFeil += oppgave4();
     antallFeil += oppgave5();
     antallFeil += oppgave6();
-    //antallFeil += oppgave7();
-    //antallFeil += oppgave8();
-    //antallFeil += oppgave9();
+    antallFeil += oppgave7();
+    antallFeil += oppgave8();
+    antallFeil += oppgave9();
     //antallFeil += oppgave10();
 
     if (antallFeil == 0)
@@ -1130,7 +1130,7 @@ public class Oblig2Test
     if (!sb5.toString().equals("LarsAndersBodilKariPerBerit"))
     {
       System.out.println
-        ("Oppgave 9h: forEachRemaining virker ikke som den skal!");
+        ("Oppgave 9h: forEachRemaining virker ikke som den skal!"+sb5);
       antallFeil++;
     }
 
@@ -1141,7 +1141,7 @@ public class Oblig2Test
     if (!sb6.toString().equals("KariPerBerit"))
     {
       System.out.println
-        ("Oppgave 9i: forEachRemaining virker ikke som den skal!");
+        ("Oppgave 9i: forEachRemaining virker ikke som den skal!"+sb6);
       antallFeil++;
     }
 

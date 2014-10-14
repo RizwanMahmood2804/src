@@ -11,6 +11,7 @@ package oblig;
  * @author kristofferjohansen
  */
 import java.util.*;
+import java.util.function.*;
 
 public class DobbeltLenketListe<T> implements Liste<T>
 {
@@ -164,6 +165,7 @@ public class DobbeltLenketListe<T> implements Liste<T>
       else return false;
   }
 
+
   @Override
   public T hent(int indeks)
   {
@@ -202,18 +204,27 @@ public class DobbeltLenketListe<T> implements Liste<T>
   @Override
   public boolean fjern(T verdi)
   {
-      if(antall == 0) throw new IndexOutOfBoundsException("Tabellen er tom");
-      if(inneholder(verdi)) {
-        Node<T> peker = hode;
-        for(int i = 0; i<antall-1; i++){
-            if(peker.verdi.equals(verdi)){
-                fjern(peker.verdi);
-                return true;
-            }
-            peker = peker.neste;
+      boolean returverdi = false;
+      if(verdi != null){      
+        if(antall == 0) throw new IndexOutOfBoundsException("Tabellen er tom");
+        if(inneholder(verdi)) {
+          Node<T> peker = hode;
+          if(peker.verdi.equals(verdi)){
+              fjern(0).equals(verdi);
+              returverdi = true;
+          } else{
+              for(int i = 1; i<antall; i++){
+                  if(peker.neste.verdi.equals(verdi)){                
+                      fjern(i).equals(verdi);
+                      returverdi = true;
+                  }
+                  if(i != antall-1)
+                  peker = peker.neste;
+              }        
+          }
         }
-      }
-    return false;
+      } 
+      return returverdi;
   }
 
     @Override
@@ -222,21 +233,22 @@ public class DobbeltLenketListe<T> implements Liste<T>
         T returverdi;
         if(antall == 0) throw new IndexOutOfBoundsException("Tabellen er tom");
         if(indeks >antall-1 || indeks <0) throw new IndexOutOfBoundsException("Indeksen du vil fjerne finnes ikke");
-
         if (indeks == 0) {
             returverdi = hode.verdi;                 // tar vare på verdien som skal fjernes
+            if(hode.neste != null) {
             hode = hode.neste;                  // hode flyttes til neste node
             hode.forrige = null;
+        } else
+                hode = null;
             if (antall == 1) hale = null;      // det var kun en verdi i listen
-        }else if((antall-1)==indeks){
-            System.out.println("Bever");
-            returverdi = hode.verdi;
         } else {
             Node<T> p = finnNode(indeks - 1);  // p er noden foran den som skal fjernes
             Node<T> q = p.neste;               // q skal fjernes
-            returverdi = q.verdi;                    // tar vare på verdien som skal fjernes
+            returverdi = q.verdi;              // tar vare på verdien som skal fjernes
             if (q == hale) hale = p;           // q er siste node
-            p.neste = q.neste;                 // "hopper over" q
+            p.neste = q.neste;
+            if((antall-1) >indeks)
+            p.neste.forrige = p;
         }
         antallEndringer++;                   // en ny endring
         antall--;                            // reduserer antallet
@@ -246,9 +258,28 @@ public class DobbeltLenketListe<T> implements Liste<T>
   @Override
   public void nullstill()
   {
-    throw new UnsupportedOperationException("Ikke laget ennå!");
+      hode = null;
+      hale = null;
+      antall = 0;
+      antallEndringer++;
   }
+    
+    @Override
+    public void forEach(Consumer<? super T> handling) {
+        if(handling == null) throw new NullPointerException("Du må ha en handling!");
+        if(antall != 0){
+            Node<T> peker = hode;
+            if(peker == null)
+                throw new NullPointerException("Verdien finnes ikke!");
+            handling.accept(peker.verdi);
+            for(int i = 1; i <antall; i++){
+                handling.accept(peker.neste.verdi);
+                peker = peker.neste;
+            }
+        }
+    }
 
+    
   @Override
   public String toString()
   {
@@ -284,12 +315,12 @@ public class DobbeltLenketListe<T> implements Liste<T>
   @Override
   public Iterator<T> iterator()
   {
-    throw new UnsupportedOperationException("Ikke laget ennå!");
+    return new DobbeltLenketListeIterator();
   }
 
   public Iterator<T> iterator(int indeks)
   {
-    throw new UnsupportedOperationException("Ikke laget ennå!");
+    return new DobbeltLenketListeIterator(indeks);
   }
 
   private class DobbeltLenketListeIterator implements Iterator<T>
@@ -305,16 +336,49 @@ public class DobbeltLenketListe<T> implements Liste<T>
       forventetAntallEndringer = antallEndringer;  // teller endringer
     }
 
+    private DobbeltLenketListeIterator(int indeks)
+    {
+        indeksKontroll(indeks);
+        denne = finnNode(indeks);     // denne starter på den første i listen
+        fjernOK = false;  // blir sann når next() kalles
+        forventetAntallEndringer = antallEndringer;  // teller endringer
+    }
+    
+    @Override
+    public void forEachRemaining(Consumer<? super T> handling){
+        if(handling == null) throw new NullPointerException("Du må ha en handling!");    
+        if(antall != 0){
+            if(denne == null)
+                throw new NullPointerException("Verdien finnes ikke!");
+            handling.accept(denne.verdi);
+            while(denne.neste != null){
+                handling.accept(denne.neste.verdi);
+                denne = denne.neste;
+            }
+        }
+    }    
+
     @Override
     public boolean hasNext()
     {
-      throw new UnsupportedOperationException("Ikke laget ennå!");
+      return denne != null;
     }
 
     @Override
     public T next()
     {
-      throw new UnsupportedOperationException("Ikke laget ennå!");
+        if (antallEndringer != forventetAntallEndringer)
+        {
+          throw new ConcurrentModificationException("Listen er endret!");
+        }
+        if (!hasNext())
+        {
+          throw new NoSuchElementException("Tomt eller ingen flere verdier!");
+        }
+        fjernOK = true;            // nå kan remove() kalles
+        T denneVerdi = denne.verdi;    // tar vare på verdien i p
+        denne = denne.neste;               // flytter p til den nestenoden
+        return denneVerdi;         // returnerer verdien
     }
 
     @Override
