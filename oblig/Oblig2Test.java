@@ -17,7 +17,7 @@ public class Oblig2Test
     antallFeil += oppgave7();
     antallFeil += oppgave8();
     antallFeil += oppgave9();
-    //antallFeil += oppgave10();
+    antallFeil += oppgave10();
 
     if (antallFeil == 0)
     {
@@ -1184,7 +1184,8 @@ public class Oblig2Test
     if (!liste.omvendtString().equals("[12, 10, 8, 6, 4, 2]"))
     {
       antallFeil++;
-      System.out.println("Oppgave 10c: Feil i remove()!");
+      System.out.println("Oppgave 10c: Feil i remove"+liste);
+      System.out.println("Oppgave 10c: Feil i remove() "+liste.omvendtString());
     }
 
     // fjerner alle i listen
