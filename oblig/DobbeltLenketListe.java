@@ -1,8 +1,9 @@
 /*
+    Oblig 2
     Kristoffer Johansen
     s193370
     HiNGDATA13H2AA
- */
+*/
 
 package oblig;
 
