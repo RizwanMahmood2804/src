@@ -303,20 +303,17 @@ public class DobbeltLenketListe<T> implements Liste<T> {
             fjernOK = false;  // blir sann når next() kalles
             forventetAntallEndringer = antallEndringer;  // teller endringer
         }
-        
+
+
+ 
         @Override
-        public void forEachRemaining(Consumer<? super T> handling){
-            if(handling == null) throw new NullPointerException("Du må ha en handling!");    
-            if(antall != 0){
-                if(denne == null)
-                    throw new NullPointerException("Verdien finnes ikke!");
+        public void forEachRemaining(Consumer<? super T> handling) {
+            if(handling == null) throw new NullPointerException("Du må ha en handling!");
+            while (denne != null) {
                 handling.accept(denne.verdi);
-                while(denne.neste != null){
-                    handling.accept(denne.neste.verdi);
-                    denne = denne.neste;
-                }
+                denne = denne.neste;
             }
-        }    
+        }
 
         @Override
         public boolean hasNext() {
