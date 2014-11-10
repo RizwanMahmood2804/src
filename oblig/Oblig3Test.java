@@ -42,23 +42,71 @@ public class Oblig3Test
   }
 
 public static int oppgave1() {
-    int[] a = {6,2,3,2,2,2,3,4,6,4,6};
+    
+    ObligSBinTre<Integer> tretomt = ObligSBinTre.naturligOrdenTre();
+    System.out.println("tretomt "+tretomt);
+    System.out.println("tretomt baklents"+tretomt.omvendtString());
+    int[] a = {4,7,2,2,3,4,1,2,7,5,6,4,6};
     
     ObligSBinTre<Integer> tre1 = ObligSBinTre.naturligOrdenTre();
     for(int i = 0; i<a.length; i++){
         tre1.leggInn(a[i]);
     }
-    System.out.println("tre1"+tre1);
-    System.out.println("Antall nummer 6 er "+tre1.antall(6));    
-    String[] s = {"s","s","u","bæsj","test","bever","bæsj","bæsj","bæsj"};
+    System.out.println("tre1 "+tre1);
+    System.out.println("trer "+tre1.omvendtString());   
+    tre1.fjern(4);
+    System.out.println("høyregren: "+tre1.høyreGren());
+    System.out.println("tre1 "+tre1);
+    System.out.println("trer "+tre1.omvendtString());
+    
+    System.out.println("antall fjernalle fjernet"+tre1.fjernAlle(2));
+//    tre1.fjernAlle(2);
+    System.out.println("tre1 "+tre1);
+    System.out.println("trer "+tre1.omvendtString());    
+    System.out.println("Fjern 1"+tre1.fjern(1));    
+    System.out.println("tre1 "+tre1);
+    System.out.println("trer "+tre1.omvendtString());    
+    System.out.println("høyregren: "+tre1.høyreGren());
+//    System.out.println("Antall nummer 6 er "+tre1.antall(6));    
+    String[] s = {"d","s","a","c","s","u","b","test","a","b","b","c"};
     
     ObligSBinTre<String> tre2 = ObligSBinTre.naturligOrdenTre();
     for(int i = 0; i<s.length; i++){
         tre2.leggInn(s[i]);
     }    
-    System.out.println("tre2"+tre2);
-    System.out.println("Antall \"s\" er "+tre2.antall("s"));
-    System.out.println("Antall \"bæsj\" er "+tre2.antall("bæsj"));
+    System.out.println("tre2 "+tre2);
+    System.out.println("tre2 "+tre2.omvendtString());
+    tre2.fjern("s");
+    System.out.println("tre2 "+tre2);
+    System.out.println("tre2 "+tre2.omvendtString()); 
+    tre2.fjern("d");
+    System.out.println("tre2 "+tre2);
+    System.out.println("tre2 "+tre2.omvendtString());     
+    System.out.println("alle c var "+tre2.fjernAlle("c"));
+        System.out.println("tre2 "+tre2);
+    System.out.println("tre2 "+tre2.omvendtString());  
+
+//    System.out.println("Antall \"s\" er "+tre2.antall("s"));
+//    System.out.println("Antall \"bæsj\" er "+tre2.antall("bæsj"));
+
+    ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder());
+
+    char[] verdier = "GSAHQNRBFCJDOEPKIML".toCharArray();
+    for (char c : verdier) tre.leggInn(c);
+String[] g;
+    g = tre.grener();
+/*    for(int i = 0; i< g.length; i++){
+        System.out.println(g[i]);
+    }
+ */
+    for (String gren : g) System.out.println(gren);
+//    System.out.println(q.toString());
+    // Utskrift:
+    // [G, A, B, F, C, D, E]
+    // [G, S, H, Q, N, J, I]
+    // [G, S, H, Q, N, J, K, M, L]
+    // [G, S, H, Q, N, O, P]
+    // [G, S, H, Q, R]    
     
     return 0;
 }

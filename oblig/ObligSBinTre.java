@@ -4,12 +4,6 @@ import java.util.*;
 
 public class ObligSBinTre<T> implements Beholder<T>
 {
-
-
-    ObligSBinTre() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     
 private static final class Node<T>   // en indre nodeklasse
   {
@@ -107,12 +101,108 @@ private static final class Node<T>   // en indre nodeklasse
   @Override
   public boolean fjern(T verdi)
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    if (verdi == null) return false;  // treet har ingen nullverdier
+
+    Node<T> p = rot, q = null;   // q skal være forelder til p
+
+    while (p != null)            // leter etter verdi
+    {
+      int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+      if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+      else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
+      else break;    // den søkte verdien ligger i p
+    }
+    if (p == null) return false;   // finner ikke verdi
+
+    if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
+    {
+      Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+        System.out.println("SATAN");
+      if (p == rot){
+          b.forelder = null;
+          rot = b;
+      } 
+      else if (p == q.venstre) {
+          q.venstre = b;
+      }
+      else{
+          q.høyre = b;
+          b.forelder = q;
+      } 
+    }
+    else  // Tilfelle 3)
+    {
+      Node<T> s = p, r = p.høyre;   // finner neste i inorden
+      if(p == rot){
+          System.out.println("ROT");
+                    if(p.venstre==null){
+                            if(p.høyre==null){
+                                rot = null;
+                            } else{
+                                p.høyre.forelder = null;
+                                rot = p.høyre;
+                            }
+                    }
+                    else if(p.høyre==null){
+                            p.venstre.forelder = null;
+                            rot = p.venstre;
+                    }else{
+                        Node u = p;
+                            u = p.venstre;
+                            if(u.høyre != null){
+                                while(u.høyre != null){
+                                    u = u.høyre;
+                                }                            
+                            }
+                            
+//                            String minTitle = minTitle(root);
+                        Node temp = p.høyre;
+                        
+                        p.venstre.forelder = null;
+                        rot = p.venstre;
+                        u.høyre = temp;
+                    }
+        }else {
+            while (r.venstre != null) {
+                s = r;    // s er forelder til r
+                r = r.venstre;
+                r.forelder = s;
+            }
+
+            p.verdi = r.verdi;   // kopierer verdien i r til p
+
+            if (s != p){
+
+                s.venstre = r.høyre;
+                s.forelder = r;
+                System.out.println("shit luck");
+            }else {
+                s.høyre = r.høyre;
+
+                s.forelder = q;
+                s.høyre.forelder = s;
+
+            }      
+        }
+      
+    }
+
+    antall--;   // det er nå én node mindre i treet
+    return true;
   }
   
   public int fjernAlle(T verdi)
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      int i = 0;
+      boolean fjernet = true;
+      while(fjernet!=false){
+          System.out.println("verdi"+verdi);
+          if(fjern(verdi))
+            i++;
+          else 
+              fjernet = false;
+      }
+      return i;
   }
   
   @Override
@@ -146,75 +236,128 @@ private static final class Node<T>   // en indre nodeklasse
     return antall == 0;
   }
 
-  @Override
-  public void nullstill()
-  {
-    rot = null;
-    antall = 0;
-  }
-  
-    private static <T> Node<T> nesteInorden(Node<T> p) {
-        System.out.println("p"+p);
-        if (p.venstre != null){                  // p har et venstre subtre
-            nesteInorden(p.venstre);              // komma og mellomrom etter
-//            s.append(',').append(' ');           // den siste i det venstre
-        }                                        // subtreet til p
-//        s.append(p.verdi);                       // verdien i p
-        
-        if (p.høyre != null){                    // p har et høyre subtre
-//            s.append(',').append(' ');           // komma og mellomrom etter
-            nesteInorden(p.høyre);                // p siden p ikke er den
-        }
-        return p;
+    @Override
+    public void nullstill() {
+        rot = null;
+        antall = 0;
     }
   
+    private static <T> Node<T> nesteInorden(Node<T> temp) {
+        if (temp == null)
+            return null;
+        if (temp.høyre != null)
+            return finnLaveste(temp.høyre);
+        Node y = temp.forelder;
+        Node x = temp;
+        while (y != null && x == y.høyre) {
+            x = y;
+            y = y.forelder;
+        }
+        return y;
+    }
+    
+    
+    private static<T> Node<T> finnLaveste(Node<T> p){
+            if (p == null)
+                return null;
+            if (p.venstre != null)
+                return finnLaveste(p.venstre);
+            return p;
+    }
+
+    
     @Override
     public String toString() {                   // hører til SBinTre 
         StringBuilder s = new StringBuilder();   // StringBuilder
         s.append('[');                           // starter med [
-        if (!tom()) {
-//            s.append(rot);
-            Node p = rot;
-//                System.out.println("s "+s);
-                s.append(",").append(" ");
-                s.append(p);
+        Node p = rot;
+        if(p!=null){
+            while(p.venstre != null)
+                p= finnLaveste(p);
+            s.append(p);
+            while(nesteInorden(p)!=null){
                 p = nesteInorden(p);
-                for(int i = 0; i<4;i++){
-                    s.append(",").append(" ");
-                    s.append(p);
-                    p = nesteInorden(p);                
-                }
-                System.out.println("s"+s);
+                s.append(",").append(" ").append(p);            
+            }        
         }
-        s.append(']');                           // avslutter med ]
-        return s.toString();                     // returnerer
+        s.append(']');
+        return s.toString();
     }
-    private static <T> void toString(Node<T> p, StringBuilder s) {
-        if (p.venstre != null){                  // p har et venstre subtre
 
-            toString(p.venstre, s);              // komma og mellomrom etter
-            s.append(',').append(' ');           // den siste i det venstre
-        }                                        // subtreet til p
+    public String omvendtString() {
+        StringBuilder s = new StringBuilder();
+        s.append('[');
+        Stack stakk = new Stack();
+        Node p = finnLaveste(rot);
+        if(p != null){
+            stakk.push (p);
+            while (nesteInorden(p) != null) { 
+                p = nesteInorden(p);
+                stakk.push (p);
+            }                
+        }
 
-        s.append(p.verdi);                       // verdien i p
-        if (p.høyre != null){                    // p har et høyre subtre
-            s.append(',').append(' ');           // komma og mellomrom etter
-            toString(p.høyre, s);                // p siden p ikke er den
-        }                                        // siste noden i inorden
+        while ( !stakk.empty() )
+        {
+                s.append( stakk.pop() );
+                if(!stakk.empty())
+                    s.append(",").append(" ");
+        }
+        s.append(']');
+        return s.toString();
     }
-  public String omvendtString()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
   
   public String høyreGren()
   {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+      StringBuilder s = new StringBuilder();
+      s.append("[");
+      if(rot != null){
+        Node p = rot;
+        s.append(p);
+        while(p.høyre != null){
+            p = p.høyre;
+            s.append(",").append(" ").append(p);            
+        }      
+      }
+      s.append("]");
+      return s.toString();
   }
   
-  public String[] grener()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
+    public String[] grener() {
+        Queue<Object> q = new LinkedList<Object>();
+        String[] st = new String[0];
+        q.add(rot);
+        q.add(rot.verdi + "");
+        int size =0;
+        while(!q.isEmpty()){
+
+            Node p = (Node) q.remove();
+            String headPath = (String) q.remove();
+
+            if(p.venstre==null && p.høyre==null){
+                String[] tempArray = new String[size+1];
+                    System.arraycopy(st, 0, tempArray, 0, size);
+                    tempArray[size] = headPath;
+                    st = tempArray;
+                    size++;         
+//                System.out.println(headPath);
+                continue;
+            }
+
+            if(p.venstre!=null){
+                String leftStr =  headPath + ", " + p.venstre.verdi;
+                q.add(p.venstre);
+                q.add(leftStr);
+                System.out.println("leftStr "+leftStr);
+            }
+
+            if(p.høyre!=null){
+                String rightStr =  headPath + ", " + p.høyre.verdi;
+                q.add(p.høyre);
+                q.add(rightStr);
+            }
+        }
+        return st;
   }
   
   public String bladnodeverdier()
