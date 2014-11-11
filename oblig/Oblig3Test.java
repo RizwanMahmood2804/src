@@ -8,10 +8,8 @@ package oblig;
 
 /**
  *
- * @author Kris
+ * @author kristofferjohansen
  */
-
-
 import java.util.*;
 
 public class Oblig3Test
@@ -21,14 +19,15 @@ public class Oblig3Test
     int antallFeil = 0;
 
     antallFeil += oppgave1();
-    //antallFeil += oppgave2();
-    //antallFeil += oppgave3();
-    //antallFeil += oppgave4();
-    //antallFeil += oppgave5();
-    //antallFeil += oppgave6();
-    //antallFeil += oppgave7();
-    //antallFeil += oppgave8();
-    //antallFeil += oppgave9();
+    antallFeil += oppgave2();
+    antallFeil += oppgave3();
+    antallFeil += oppgave4();
+    antallFeil += oppgave5();
+//    antallFeil += oppgave6();
+//    antallFeil += oppgave7();
+//    antallFeil += oppgave8();
+//    antallFeil += oppgave9();
+//    antallFeil += oppgave10();
 
     if (antallFeil == 0)
     {
@@ -41,205 +40,91 @@ public class Oblig3Test
     }
   }
 
-public static int oppgave1() {
-    
-    ObligSBinTre<Integer> tretomt = ObligSBinTre.naturligOrdenTre();
-    System.out.println("tretomt "+tretomt);
-    System.out.println("tretomt baklents"+tretomt.omvendtString());
-    int[] a = {4,7,2,2,3,4,1,2,7,5,6,4,6};
-    
-    ObligSBinTre<Integer> tre1 = ObligSBinTre.naturligOrdenTre();
-    for(int i = 0; i<a.length; i++){
-        tre1.leggInn(a[i]);
-    }
-    System.out.println("tre1 "+tre1);
-    System.out.println("trer "+tre1.omvendtString());   
-    tre1.fjern(4);
-    System.out.println("høyregren: "+tre1.høyreGren());
-    System.out.println("tre1 "+tre1);
-    System.out.println("trer "+tre1.omvendtString());
-    
-    System.out.println("antall fjernalle fjernet"+tre1.fjernAlle(2));
-//    tre1.fjernAlle(2);
-    System.out.println("tre1 "+tre1);
-    System.out.println("trer "+tre1.omvendtString());    
-    System.out.println("Fjern 1"+tre1.fjern(1));    
-    System.out.println("tre1 "+tre1);
-    System.out.println("trer "+tre1.omvendtString());    
-    System.out.println("høyregren: "+tre1.høyreGren());
-//    System.out.println("Antall nummer 6 er "+tre1.antall(6));    
-    String[] s = {"d","s","a","c","s","u","b","test","a","b","b","c"};
-    
-    ObligSBinTre<String> tre2 = ObligSBinTre.naturligOrdenTre();
-    for(int i = 0; i<s.length; i++){
-        tre2.leggInn(s[i]);
-    }    
-    System.out.println("tre2 "+tre2);
-    System.out.println("tre2 "+tre2.omvendtString());
-    tre2.fjern("s");
-    System.out.println("tre2 "+tre2);
-    System.out.println("tre2 "+tre2.omvendtString()); 
-    tre2.fjern("d");
-    System.out.println("tre2 "+tre2);
-    System.out.println("tre2 "+tre2.omvendtString());     
-    System.out.println("alle c var "+tre2.fjernAlle("c"));
-        System.out.println("tre2 "+tre2);
-    System.out.println("tre2 "+tre2.omvendtString());  
 
-//    System.out.println("Antall \"s\" er "+tre2.antall("s"));
-//    System.out.println("Antall \"bæsj\" er "+tre2.antall("bæsj"));
-
-    ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder());
-
-    char[] verdier = "GSAHQNRBFCJDOEPKIML".toCharArray();
-    for (char c : verdier) tre.leggInn(c);
-String[] g;
-    g = tre.grener();
-/*    for(int i = 0; i< g.length; i++){
-        System.out.println(g[i]);
-    }
- */
-    for (String gren : g) System.out.println(gren);
-//    System.out.println(q.toString());
-    // Utskrift:
-    // [G, A, B, F, C, D, E]
-    // [G, S, H, Q, N, J, I]
-    // [G, S, H, Q, N, J, K, M, L]
-    // [G, S, H, Q, N, O, P]
-    // [G, S, H, Q, R]    
-    
-    return 0;
-}
   // OPPGAVE 1 ////////////////////////////////////////////////
-/*
+
   public static int oppgave1()
   {
     int antallFeil = 0;
-    ObligSBinTre<Node> tre = ObligSBinTre.lagTre();
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
 
     try
     {
-      if (tre.antall(1) != 0)
+      if (tre.antall() != 0)
       {
         antallFeil++;
-        System.out.println("Oppgave 1a: En verdi er 0 ganger i et tomy tre!!");
+        System.out.println("Oppgave 1a: Feil antall i et tomt tre!");
       }
     }
     catch (Exception e)
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 1b: Skal ikke kaste unntak i et tomt tre!\n"
-        + "Da er antall forekomster av en verdi lik 0!");
+        ("Oppgave 1b: Skal ikke kaste unntak for et tomt tre");
     }
 
-    tre.leggInn(10);
+    tre.leggInn(1); tre.leggInn(2); tre.leggInn(3);
 
-    if (tre.antall(10) != 1 || tre.antall(5) != 0 || tre.antall(15) != 0)
+    if (tre.antall() != 3)
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 1c: Metoden gir feil svar for et tre med kun en verdi!");
+        ("Oppgave 1c: Antall blir ikke oppdatert!");
     }
 
-    tre.nullstill();
-
-    int[] a = {10,5,8,9,8,20,15,3,17,20,3,16,20};
-    for (int k : a) tre.leggInn(k);
-
-    int[] ant = {1,1,2,1,2,3,1,2,1,3,2,1,3};
-
-    for (int i = 0; i < a.length; i++)
-    {
-      if (tre.antall(a[i]) != ant[i])
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 1d: Det er  " + ant[i] + " forekomster av " + a[i]);
-      }
-    }
-
-    int[] b = {2,7,13,21};
-
-    for (int i = 0; i < b.length; i++)
-    {
-      if (tre.antall(b[i]) != 0)
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave f: Det er 0 forekomster av " + b[i]);
-      }
-    }
     return antallFeil;
 
-  }  // Oppgave 1
-*/
+  }  // slutt på Oppgave 1
+
 
   // OPPGAVE 2 ////////////////////////////////////////////////
-/*
+
   public static int oppgave2()
   {
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
 
     int antallFeil = 0;
 
-    tre.leggInn(10);
-    if (tre.antallIngenBarn() != 1 || tre.antallEttBarn() != 0
-      || tre.antallToBarn() != 0 || tre.høyde() != 0)
+    tre.leggInn(1);
+
+    try
+    {
+      if (tre.antall(1) != 1)
+      {
+        antallFeil++;
+        System.out.println("Oppgave 2a: Feil antall(T)-metoden!");
+      }
+    }
+    catch (Exception e)
     {
       antallFeil++;
       System.out.println
-          ("Oppgave 2a: Feil i variabelverdiene for et tre med en node!");
+        ("Oppgave 2b: Skal ikke kaste unntak her!");
     }
 
-    tre.leggInn(5);
-    if (tre.antallIngenBarn() != 1 || tre.antallEttBarn() != 1
-      || tre.antallToBarn() != 0 || tre.høyde() != 1)
+    int[] a = {7,1,6,1,5,1,4,1,1,1,3};
+    for (int verdi : a) tre.leggInn(verdi);
+
+    if (tre.antall(1) != 7)
     {
       antallFeil++;
-      System.out.println
-          ("Oppgave 2b: Feil i variabelverdiene for et tre med to noder!");
+      System.out.println("Oppgave 2c: Feil antall(T)-metoden!");
     }
 
-    tre.leggInn(15);
-    if (tre.antallIngenBarn() != 2 || tre.antallEttBarn() != 0
-      || tre.antallToBarn() != 1 || tre.høyde() != 1)
+    if (tre.antall(7) != 1 || tre.antall(6) != 1
+      || tre.antall(5) != 1 || tre.antall(4) != 1
+      || tre.antall(3) != 1 || tre.antall(2) != 0
+      || tre.antall(0) != 0)
     {
       antallFeil++;
-      System.out.println
-          ("Oppgave 2c: Feil i variabelverdiene for et tre med tre noder!");
-    }
-
-    tre.leggInn(8);
-    if (tre.antallIngenBarn() != 2 || tre.antallEttBarn() != 1
-      || tre.antallToBarn() != 1 || tre.høyde() != 2)
-    {
-      antallFeil++;
-      System.out.println
-          ("Oppgave 2d: Feil i variabelverdiene for et tre med fire noder!");
-    }
-
-   tre.leggInn(3);
-    if (tre.antallIngenBarn() != 3 || tre.antallEttBarn() != 0
-      || tre.antallToBarn() != 2 || tre.høyde() != 2)
-    {
-      antallFeil++;
-      System.out.println
-          ("Oppgave 2e: Feil i variabelverdiene for et tre med fem noder!");
-    }
-
-    tre.leggInn(7);
-    if (tre.antallIngenBarn() != 3 || tre.antallEttBarn() != 1
-      || tre.antallToBarn() != 2 || tre.høyde() != 3)
-    {
-      antallFeil++;
-      System.out.println
-          ("Oppgave 2f: Feil i variabelverdiene for et tre med seks noder!");
+      System.out.println("Oppgave 2d: Feil antall(T)-metoden!");
     }
 
     return antallFeil;
 
-  } // Oppgave 2
+  }  // slutt på Oppgave 2
 
 
   // OPPGAVE 3 ////////////////////////////////////////////////
@@ -247,220 +132,72 @@ String[] g;
   public static int oppgave3()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    String s;
 
     try
     {
-      tre.nestMin();
-      antallFeil++;
-      System.out.println("Oppgave 3a: Skal kaste unntak for et tomt tre!!");
+      s = tre.toString();
+      if (!s.equals("[]"))
+      {
+        antallFeil++;
+        System.out.println("Oppgave 3a: Feil i toString() for et tomt tre!!");
+      }
     }
     catch (Exception e)
     {
-      if (!(e instanceof NoSuchElementException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 3b: Kaster feil type unntak for et tomt tre!");
-      }
+      antallFeil++;
+      System.out.println
+        ("Oppgave 3b: Skal ikke kaste unntak for et tomt tre!");
     }
 
     tre.leggInn(10);
 
-    try
-    {
-       tre.nestMin();
-       antallFeil++;
-       System.out.println
-         ("Oppgave 3c: Skal kaste unntak for et tre med en verdi!");
-    }
-    catch (Exception e)
-    {
-      if (!(e instanceof NoSuchElementException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 3d: Kaster feil type unntak for et tre med en verdi!");
-      }
-    }
-
-    tre.nullstill();
-
-    tre.leggInn(2); tre.leggInn(1);
-
-    if (tre.nestMin() != 2)
+    s = tre.toString();
+    if (!s.equals("[10]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 3e: Feil når rotnodeverdien er nest minst!");
+      System.out.println("Oppgave 3c: Feil i toString() for et tomt tre!!");
     }
 
-    tre.nullstill();
-
-    int[] a = new int[] {1,6,4,7,2,5,3};
-    for (int k : a) tre.leggInn(k);
-
-    if (tre.nestMin() != 2)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3f: Feil når rotnodeverdien er minst!");
-    }
-
-    tre.nullstill();
-
-    a = new int[] {5,4,3,2,1};
-    for (int k : a) tre.leggInn(k);
-
-    if (tre.nestMin() != 2)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3g: Feil når den minste ikke har et høyre barn!");
-    }
-
-    tre.nullstill();
-
-    a = new int[] {11,9,12,7,10,1,8,5,4,6,2,3};
-    for (int k : a) tre.leggInn(k);
-
-    if (tre.nestMin() != 2)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3h: Feil når den første har et høyre barn!");
-    }
-
-    tre.nullstill();
+    int[] a = {6,14,1,8,12,3,7,9,11,13,2,5,4};
+    for (int verdi : a) tre.leggInn(verdi);
 
     try
     {
-      tre.maks();
-      antallFeil++;
-      System.out.println("Oppgave 3i: Skal kaste unntak for et tomt tre!!");
+      s = tre.toString();
+      if (!s.equals("[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]"))
+      {
+        antallFeil++;
+        System.out.println("Oppgave 3d: Feil i toString()!");
+      }
     }
     catch (Exception e)
     {
-      if (!(e instanceof NoSuchElementException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 3j: Kaster feil type unntak for et tomt tre!");
-      }
-    }
-
-    tre.leggInn(10);
-
-    if (tre.maks() != 10)
-    {
       antallFeil++;
       System.out.println
-        ("Oppgave 3k: Rotnodeverdien er størst i et tre med en verdi!");
-    }
-
-    tre.leggInn(5); tre.leggInn(8);
-
-    if (tre.maks() != 10)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3l: Rotnodeverdien er størst når roten ikke har høyre barn!");
-    }
-
-    tre.leggInn(15); tre.leggInn(20); tre.leggInn(17);
-
-    int verdi = tre.maks();
-
-    if (tre.maks() != 20)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3m: 20 er største verdi og ikke " + verdi + "!");
+        ("Oppgave 3e: Her kastes et unntak! Noe er feil her!");
     }
 
     tre.nullstill();
 
-    try
-    {
-      tre.nestMaks();
-      antallFeil++;
-      System.out.println("Oppgave 3n: Skal kaste unntak for et tomt tre!!");
-    }
-    catch (Exception e)
-    {
-      if (!(e instanceof NoSuchElementException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 3o: Kaster feil type unntak for et tomt tre!");
-      }
-    }
+    tre.leggInn(10); tre.leggInn(10); tre.leggInn(10); tre.leggInn(10);
 
-    tre.leggInn(10);
-
-    try
-    {
-       tre.nestMaks();
-       antallFeil++;
-       System.out.println
-         ("Oppgave 3p: Skal kaste unntak for et tre med en verdi!");
-    }
-    catch (Exception e)
-    {
-      if (!(e instanceof NoSuchElementException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 3q: Kaster feil type unntak for et tre med en verdi!");
-      }
-    }
-
-    tre.leggInn(5);
-
-    verdi = tre.nestMaks();
-    if (verdi != 5)
+    s = tre.toString();
+    if (!s.equals("[10, 10, 10, 10]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 3r: 5 er nest største verdi og ikke " + verdi + "!");
-    }
-
-    tre.leggInn(8);
-
-    verdi = tre.nestMaks();
-    if (verdi != 8)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3s: 8 er nest største verdi og ikke " + verdi + "!");
-    }
-
-    tre.leggInn(15);
-
-    verdi = tre.nestMaks();
-    if (verdi != 10)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3t: 10 er nest største verdi og ikke " + verdi + "!");
-    }
-
-    tre.leggInn(20); tre.leggInn(17); tre.leggInn(19);
-
-    verdi = tre.nestMaks();
-    if (verdi != 19)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 3u: 19 er nest største verdi og ikke " + verdi + "!");
+      System.out.println("Oppgave 3f: Feil i toString()!");
     }
 
     return antallFeil;
 
-  }  // Oppgave 3
+  }  // slutt på Oppgave 3
 
 
-// OPPGAVE 4 ////////////////////////////////////////////////  
+////// hjelpemetoder //////////////////////////  
 
   public static void bytt(int[] a, int i, int j)
   {
@@ -485,11 +222,23 @@ String[] g;
     return true;    // a inneholder en ny permutasjon
   }
 
+// OPPGAVE 4 ////////////////////////////////////////////////    
 
   public static int oppgave4()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
+
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    String s;
+
+    s = tre.omvendtString();
+    if (!s.equals("[]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 4a: Feil i omvendtString()!");
+    }
 
     int[] a = {1,2,3,4,5};
 
@@ -497,50 +246,22 @@ String[] g;
     while (flere)
     {
       for (int k : a) tre.leggInn(k);
-      int verdi = tre.minFjern();
+      s = tre.omvendtString();
 
-      int sum =
-        tre.antallIngenBarn() + tre.antallEttBarn() + tre.antallToBarn();
-
-      String utskrift = tre.toString();
-
-      if (verdi != 1)
+      if (!s.equals("[5, 4, 3, 2, 1]"))
       {
         antallFeil++;
-        System.out.println
-          ("Oppgave 4a: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) + " blir feil verdi fjernet!");
-        break;
-      }
-
-      if (sum != tre.antall())
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 4b: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) +
-            " får variablene feil verdi etter fjerning!");
-        break;
-      }
-
-      if (!utskrift.equals("[2, 3, 4, 5]"))
-      {
-        antallFeil++;
-        System.out.println(utskrift);
-        System.out.println
-          ("Oppgave 4c: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) +
-            " blir ikke treet korrekt etter fjerningen!");
+        System.out.println("Oppgave 4b: Feil i omvendtString()!");
         break;
       }
 
       tre.nullstill();
-
       flere = nestePermutasjon(a);
     }
 
     return antallFeil;
-  }
+
+  }  // slutt på Oppgave 4
 
 
   // OPPGAVE 5 ////////////////////////////////////////////////
@@ -548,232 +269,124 @@ String[] g;
   public static int oppgave5()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
 
-    if (tre.maksFjernAlle() != 0)
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    String s;
+
+    tre.leggInn(6);
+    tre.fjern(6);
+
+    s = tre.toString();
+    if (!s.equals("[]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5a: Skal returnere 0 for et tomt tre!");
+      System.out.println("Oppgave 5a: Feil i fjern(T)!");
     }
 
-    int[] a = {10};
-    for (int k : a) tre.leggInn(k);
+    int[] a = {6,3,9,1,5,7,10,2,4,8,11};
+    for (int verdi : a) tre.leggInn(verdi);
 
-    if (tre.maksFjernAlle() != 1)
+    tre.fjern(2);
+    s = tre.toString();
+
+    if (!s.equals("[1, 3, 4, 5, 6, 7, 8, 9, 10, 11]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5b: Det er kun en verdi som er fjernet!");
+      System.out.println("Oppgave 5b: Feil i fjern(T)!");
     }
 
-    if (tre.antall() != 0)
+    tre.fjern(4);
+    s = tre.toString();
+
+    if (!s.equals("[1, 3, 5, 6, 7, 8, 9, 10, 11]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5c: Feil i oppdateringen av antall!!");
+      System.out.println("Oppgave 5c: Feil i fjern(T)!");
     }
 
-    String s1 = "[]";
+    tre.fjern(6);
+    s = tre.toString();
 
-   if (!s1.equals(tre.toString()))
+    if (!s.equals("[1, 3, 5, 7, 8, 9, 10, 11]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5d: Det har blitt en feil i treet!");
+      System.out.println("Oppgave 5d: Feil i fjern(T)!");
     }
 
-    tre.nullstill();
-    a = new int[] {10,8,9};
-    for (int k : a) tre.leggInn(k);
+    tre.fjern(9);
+    s = tre.toString();
 
-    if (tre.maksFjernAlle() != 1)
+    if (!s.equals("[1, 3, 5, 7, 8, 10, 11]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5e: Det er kun en verdi som er fjernet!");
+      System.out.println("Oppgave 5e: Feil i fjern(T)!");
     }
 
-    if (tre.antall() != 2)
+    tre.fjern(10); tre.fjern(11); tre.fjern(8); tre.fjern(7);
+    s = tre.toString();
+
+    if (!s.equals("[1, 3, 5]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 5f: Feil i oppdateringen av antall!!");
-    }
-
-    String s2 = "[8, 9]";
-
-   if (!s2.equals(tre.toString()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5g: Det har blitt en feil i treet!");
-    }
-
-    tre.nullstill();
-    a = new int[] {10,10,10};
-    for (int k : a) tre.leggInn(k);
-
-    if (tre.maksFjernAlle() != 3)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5h: Det er tre verdier som skal være fjernet!");
-    }
-
-    if (tre.antall() != 0)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5i: Feil i oppdateringen av antall!!");
-    }
-
-    String s3 = "[]";
-
-    if (!s3.equals(tre.toString()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5j: Det har blitt en feil i treet!");
-    }
-
-    tre.nullstill();
-    a = new int[] {2,4,6,1,6,3,6,5,6};
-    for (int k : a) tre.leggInn(k);
-
-    if (tre.maksFjernAlle() != 4)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5k: Det er fire verdier som skal være fjernet!");
-    }
-
-    if (tre.antall() != 5)
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5l: Feil i oppdateringen av antall!!");
-    }
-
-    String s4 = "[1, 2, 3, 4, 5]";
-    if (!s4.equals(tre.toString()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 5m: Det har blitt en feil i treet!");
+      System.out.println("Oppgave 5f: Feil i fjern(T)!");
     }
 
     tre.nullstill();
 
-    a = new int[] {1,2,3,4,5};
-
-    boolean flere = true;
-    while (flere)
+    try
     {
-      for (int k : a) tre.leggInn(k);
-      int antall = tre.maksFjernAlle();
-
-      int sum =
-        tre.antallIngenBarn() + tre.antallEttBarn() + tre.antallToBarn();
-
-      String utskrift = tre.toString();
-
-      if (antall != 1)
+      if (tre.fjernAlle(0) != 0)
       {
         antallFeil++;
-        System.out.println
-          ("Oppgave 5n: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) + " returnerer metoden feil antall!");
-        break;
+        System.out.println("Oppgave 5g: Feil i fjernAlle(T) for tomt tre!");
       }
-
-      if (sum != tre.antall())
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 5o: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) +
-            " får variablene feil verdi etter fjerning!");
-        break;
-      }
-
-      if (!utskrift.equals("[1, 2, 3, 4]"))
-      {
-        antallFeil++;
-        System.out.println(utskrift);
-        System.out.println
-          ("Oppgave 5p: Når treet bygges med tabellen\n"
-            + Arrays.toString(a) +
-            " blir ikke treet korrekt etter fjerningen!");
-        break;
-      }
-
-      tre.nullstill();
-
-      flere = nestePermutasjon(a);
+    }
+    catch (Exception e)
+    {
+      antallFeil++;
+      System.out.println
+        ("Oppgave 5h: Kaster unntak i fjernAlle(T) for tomt tre!");
     }
 
-    tre.nullstill();
+    tre.leggInn(0);
 
-    a = new int[] {0,1,2,3,4,5,6};
-    int[] b = {1,2,3,4,5,5,5};
-
-    flere = true;
-    while (flere)
+    try
     {
-      for (int k : a) tre.leggInn(b[k]);
-      int antall = tre.maksFjernAlle();
-
-      int sum =
-        tre.antallIngenBarn() + tre.antallEttBarn() + tre.antallToBarn();
-
-      String utskrift = tre.toString();
-
-      if (antall != 3)
+      if (tre.fjernAlle(0) != 1)
       {
         antallFeil++;
-
-        int[] c = {b[a[0]],b[a[1]],b[a[2]],b[a[3]],b[a[4]],b[a[5]],b[a[6]]};
-
         System.out.println
-          ("Oppgave 5q: Når treet bygges med tabellen\n"
-            + Arrays.toString(c) + " returnerer metoden feil antall!");
-        break;
+          ("Oppgave 5i: Feil i fjernAlle(T) for tre med en verdi!");
       }
+    }
+    catch (Exception e)
+    {
+      antallFeil++;
+      System.out.println
+        ("Oppgave 5j: Kaster unntak i fjernAlle(T) for tre med en verdi!");
+    }
 
-      if (sum != tre.antall())
-      {
+    int[] b = {1,4,1,3,1,2,1,1};
+    for (int verdi : b) tre.leggInn(verdi);
 
-        int[] c = {b[a[0]],b[a[1]],b[a[2]],b[a[3]],b[a[4]],b[a[5]],b[a[6]]};
+    if (tre.fjernAlle(1) != 5)
+    {
+      antallFeil++;
+      System.out.println("Oppgave 5k: Feil i fjernAlle(T)!");
+    }
 
-        antallFeil++;
-        System.out.println
-          ("Oppgave 5r: Når treet bygges med tabellen\n"
-            + Arrays.toString(c) +
-            " får variablene feil verdi etter fjerning!");
-        break;
-      }
-
-      if (!utskrift.equals("[1, 2, 3, 4]"))
-      {
-        int[] c = {b[a[0]],b[a[1]],b[a[2]],b[a[3]],b[a[4]],b[a[5]],b[a[6]]};
-
-        antallFeil++;
-        System.out.println
-          ("Oppgave 5s: Når treet bygges med tabellen\n"
-            + Arrays.toString(c) +
-            " blir ikke treet korrekt etter fjerningen!");
-        break;
-      }
-
-      tre.nullstill();
-
-      flere = nestePermutasjon(a);
+    s = tre.toString();
+    if (!s.equals("[2, 3, 4]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 5l: Feil i fjernAlle(T)!");
     }
 
     return antallFeil;
 
-  } // Oppgave 5 
+  }  // slutt på Oppgave 5
 
 
   // OPPGAVE 6 ////////////////////////////////////////////////
@@ -781,71 +394,50 @@ String[] g;
   public static int oppgave6()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
 
-    String s1 = "[]";
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
 
-    if (!s1.equals(tre.høyreGren()))
+    String s = tre.høyreGren();
+
+    if (!s.equals("[]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 6a: Skal returnere " + s1 + " for et tomt tre!");
+      System.out.println("Oppgave 6a: Feil for tomt tre!");
     }
 
-    int[] a = {10};
-    for (int k : a) tre.leggInn(k);
+    tre.leggInn(3);
+    s = tre.høyreGren();
 
-    String s2 = "[10]";
-
-    if (!s2.equals(tre.høyreGren()))
+    if (!s.equals("[3]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 6b: Skal returnere " + s2 + " her!");
+      System.out.println("Oppgave 6b: Feil for tre med en verdi!");
     }
 
-    tre.nullstill();
-    a = new int[] {5,4,3,2,1};
-    for (int k : a) tre.leggInn(k);
+    int[] a = {1,8,2,4,7,5,6,6};
+    for (int verdi : a) tre.leggInn(verdi);
 
-    String s3 = "[5, 4, 3, 2, 1]";
-
-    if (!s3.equals(tre.høyreGren()))
+    s = tre.høyreGren();
+    if (!s.equals("[3, 8, 4, 7, 5, 6, 6]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 6c: Skal returnere " + s3 + " her!");
+      System.out.println("Oppgave 6c: Feil høyre gren!");
     }
 
     tre.nullstill();
-    a = new int[] {7,2,5,9,8,14,1,13,4,10,6,12,3,11};
-    for (int k : a) tre.leggInn(k);
+    tre.leggInn(4); tre.leggInn(3); tre.leggInn(2); tre.leggInn(1);
 
-    String s4 = "[7, 9, 14, 13, 10, 12, 11]";
-
-    if (!s4.equals(tre.høyreGren()))
+    s = tre.høyreGren();
+    if (!s.equals("[4, 3, 2, 1]"))
     {
       antallFeil++;
-      System.out.println
-        ("Oppgave 6d: Skal returnere " + s4 + " her!");
-    }
-
-    tre.nullstill();
-    a = new int[] {1,2,3,4,5};
-    for (int k : a) tre.leggInn(k);
-
-    String s5 = "[1, 2, 3, 4, 5]";
-
-    if (!s5.equals(tre.høyreGren()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 6e: Skal returnere " + s5 + " her!");
+      System.out.println("Oppgave 6d: Feil høyre gren!");
     }
 
     return antallFeil;
 
-  }  // Oppgave 6  
+  }  // slutt på Oppgave 6   
 
 
   // OPPGAVE 7 ////////////////////////////////////////////////
@@ -853,75 +445,66 @@ String[] g;
   public static int oppgave7()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
 
-    String s1 = "[]";
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
 
-    if (!s1.equals(tre.omvendtString()))
+    String[] s = tre.grener();
+
+    try
+    {
+      if (s.length != 0)
+      {
+        antallFeil++;
+        System.out.println
+          ("Oppgave 7a: Feil i grener() for tomt tre!");
+      }
+    }
+    catch (Exception e)
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 7a: Skal gi " + s1 + " for et tomt tre!");
+        ("Oppgave 7b: Kaster unntak i grener() for tomt tre!");
     }
 
-    int[] a = {10};
-    for (int k : a) tre.leggInn(k);
+    tre.leggInn(10);
+    s = tre.grener();
+    String t = Arrays.toString(s);
 
-    String s2 = "[10]";
-
-    if (!s2.equals(tre.omvendtString()))
+    if (!t.equals("[[10]]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 7b: Skal gi " + s2 + " her!");
+        ("Oppgave 7c: Feil i grener() for et tre med en verdi!");
+    }
+
+    tre.leggInn(6); tre.leggInn(9); tre.leggInn(7); tre.leggInn(8);
+    t = Arrays.toString(tre.grener());
+
+    if (!t.equals("[[10, 6, 9, 7, 8]]"))
+    {
+      antallFeil++;
+      System.out.println
+        ("Oppgave 7d: Feil grener() for tre med en gren!");
     }
 
     tre.nullstill();
-    a = new int[] {5,4,3,2,1};
-    for (int k : a) tre.leggInn(k);
 
-    String s3 = "[5, 4, 3, 2, 1]";
+    int[] a = {4,1,6,3,5,8,2,7,9};
+    for (int verdi : a) tre.leggInn(verdi);
+    s = tre.grener();
 
-    if (!s3.equals(tre.omvendtString()))
+    if (!s[0].equals("[4, 1, 3, 2]") || !s[1].equals("[4, 6, 5]")
+      || !s[2].equals("[4, 6, 8, 7]") || !s[3].equals("[4, 6, 8, 9]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 7c: Skal gi " + s3 + " her!");
-    }
-
-    tre.nullstill();
-    a = new int[] {7,2,5,9,8,14,1,13,4,10,6,12,3,11};
-    for (int k : a) tre.leggInn(k);
-
-    String s4 = "[14, 13, 12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1]";
-
-    if (!s4.equals(tre.omvendtString()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 7d: Skal returnere " + s4 + " her!");
-    }
-
-    // Sjekker med omvendtString om maksFjern er ok
-
-    tre.nullstill();
-    a = new int[] {10,5,15,13,15,14,12,15,14};
-    for (int k : a) tre.leggInn(k);
-    tre.maksFjernAlle();
-
-    String s5 = "[14, 14, 13, 12, 10, 5]";
-
-    if (!s5.equals(tre.omvendtString()))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 7e: Skal returnere " + s5 + " her!"
-        + "\nKan skyldes en feil i metoden maksFjern?");
+        ("Oppgave 7e: Feil i metoden grener()!");
     }
 
     return antallFeil;
 
-  }  // Oppgave 7    
+  }  // slutt på Oppgave 7    
 
 
   // OPPGAVE 8 ////////////////////////////////////////////////
@@ -929,15 +512,19 @@ String[] g;
   public static int oppgave8()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
+
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    String s = tre.bladnodeverdier();
 
     try
     {
-      int n = tre.grener().length;
-      if (n != 0)
+      if (!s.equals("[]"))
       {
         antallFeil++;
-        System.out.println("Oppgave 8a: Feil returverdi for en tomt tre!");
+        System.out.println
+          ("Oppgave 8a: Skal returnere [] for tomt tre!");
       }
     }
     catch (Exception e)
@@ -948,68 +535,50 @@ String[] g;
     }
 
     tre.leggInn(10);
+    s = tre.bladnodeverdier();
 
-    if (tre.grener().length != 1)
+    if (!s.equals("[10]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 8c: Treet har kun en gren!");
+        ("Oppgave 8c: Metoden skal returnere [10] her!");
     }
 
-    String s1 = "[10]";
+    tre.leggInn(11);
+    s = tre.bladnodeverdier();
 
-    if (!s1.equals(tre.grener()[0]))
+    if (!s.equals("[11]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 8d: Treet har kun den ene grenen " + s1 + "!");
+        ("Oppgave 8d: Metoden skal returnere [11] her!");
     }
 
-    int[] a = {9,8,7,6};
-    for (int k : a) tre.leggInn(k);
+    int[] a = {7,5,8,15,6,9,13,16,12,14};
+    for (int verdi : a) tre.leggInn(verdi);
+    s = tre.bladnodeverdier();
 
-    if (tre.grener().length != 1)
+    if (!s.equals("[6, 9, 12, 14, 16]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 8e: Treet har kun en gren!");
-    }
-
-    String s2 = "[10, 9, 8, 7, 6]";
-
-    if (!s2.equals(tre.grener()[0]))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 8f: Treet har kun den ene grenen " + s2 + "!");
+        ("Oppgave 8e: Metoden skal returnere [6, 9, 12, 14, 16] her!");
     }
 
     tre.nullstill();
-    a = new int[] {5,2,8,1,4,6,9,3,7};
-    for (int k : a) tre.leggInn(k);
+    for (int i = 1; i <= 5; i++) tre.leggInn(i);
+    s = tre.bladnodeverdier();
 
-    String[] t = tre.grener();
-
-    if (t.length != 4)
+    if (!s.equals("[5]"))
     {
       antallFeil++;
       System.out.println
-        ("Oppgave 8g: Treet har fire grener!");
-    }
-
-    String s3 = "[[5, 2, 1], [5, 2, 4, 3], [5, 8, 6, 7], [5, 8, 9]]";
-
-    if (!s3.equals(Arrays.toString(t)))
-    {
-      antallFeil++;
-      System.out.println
-        ("Oppgave 8h: Treet har disse grenenen:");
-      for (String gren : t) System.out.println(gren);
+        ("Oppgave 8f: Metoden skal returnere [5] her!");
     }
 
     return antallFeil;
 
-  }  // Oppgave 8      
+  }  // slutt på Oppgave 8
 
 
   // OPPGAVE 9 ////////////////////////////////////////////////
@@ -1017,9 +586,11 @@ String[] g;
   public static int oppgave9()
   {
     int antallFeil = 0;
-    SBinTre2<Integer> tre = SBinTre2.lagTre();
 
-    Iterator<Integer> i = tre.bladnodeiterator();
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    Iterator<Integer> i = tre.iterator();
 
     try
     {
@@ -1038,7 +609,7 @@ String[] g;
     }
 
     tre.leggInn(10);
-    i = tre.bladnodeiterator();
+    i = tre.iterator();
 
     if (i.next().compareTo(10) != 0)
     {
@@ -1064,48 +635,148 @@ String[] g;
     }
 
     tre.nullstill();
+
     int[] a = {5,2,8,1,4,6,9,3,7};
     for (int k : a) tre.leggInn(k);
 
-    i = tre.bladnodeiterator();
+    List<Integer> liste = new ArrayList<>();
+    tre.forEach(verdi -> liste.add(verdi));
+    String s = liste.toString();
 
-    int[] b = new int[tre.grener().length];
-    int[] c = {1,3,7,9};
-
-    for (int j = 0; j < b.length; j++) b[j] = i.next();
-
-    if (!Arrays.equals(b, c))
+    if (!s.equals("[1, 3, 7, 9]"))
     {
       antallFeil++;
-      String bladnoder = Arrays.toString(c);
       System.out.println
-        ("Oppgave 9f: Treet har disse bladnodeverdiene: " + bladnoder);
+        ("Oppgave 9f: Treet har 1, 3, 7 og 9 som bladnodeverdier!");
     }
 
-    i = tre.bladnodeiterator();
-    tre.leggInn(1);
+    tre.nullstill();
+    tre.leggInn(1); tre.leggInn(2); tre.leggInn(3); tre.leggInn(4);
 
-    try
+    int verdi = tre.iterator().next();
+    if (verdi != 4)
     {
-      i.next();
       antallFeil++;
       System.out.println
-        ("Oppgave 9g: Skal kaste unntak når treet er endret!");
-    }
-    catch (Exception e)
-    {
-      if (!(e instanceof ConcurrentModificationException))
-      {
-        antallFeil++;
-        System.out.println
-          ("Oppgave 9h: Skal kaste ConcurrentModificationException her!");
-      }
+        ("Oppgave 9g: Treet har kun 4 som bladnodeverdi!");
     }
 
     return antallFeil;
 
-  }  // Oppgave 9      
+  }  // slutt på Oppgave 9  
 
-*/
+
+// OPPGAVE 10 ////////////////////////////////////////////////
+
+  public static int oppgave10()
+  {
+    int antallFeil = 0;
+
+    ObligSBinTre<Integer> tre =
+      new ObligSBinTre<>(Comparator.naturalOrder());
+
+    Iterator<Integer> i = tre.iterator();
+
+    try
+    {
+      i.remove();
+      antallFeil++;
+      System.out.println("Oppgave 10a: Skal kaste unntak når treet er tomt!");
+    }
+    catch (Exception e)
+    {
+      if (!(e instanceof IllegalStateException))
+      {
+        antallFeil++;
+        System.out.println
+          ("Oppgave 10b: Skal kaste IllegalStateException her!");
+      }
+    }
+
+    tre.leggInn(2); tre.leggInn(1); tre.leggInn(3);
+    i = tre.iterator();
+    i.next(); i.remove();
+
+    try
+    {
+      i.remove();
+      antallFeil++;
+      System.out.println("Oppgave 10c: Ikke tillatt med remove() her!");
+    }
+    catch (Exception e)
+    {
+      if (!(e instanceof IllegalStateException))
+      {
+        antallFeil++;
+        System.out.println
+          ("Oppgave 10d: Skal kaste IllegalStateException her!");
+      }
+    }
+
+    tre.nullstill();
+
+    int[] a = {7,1,11,3,8,12,2,5,10,4,6,9};
+    for (int verdi : a) tre.leggInn(verdi);
+
+    try
+    {
+      tre.fjernHvis(x -> x % 2 == 0);  // fjerner bladnoder med partall
+
+      if (!tre.toString().equals("[1, 3, 5, 7, 8, 9, 10, 11]"))
+      {
+        antallFeil++;
+        System.out.println("Oppgave 10e: Feil i metoden remove()!");
+      }
+    }
+    catch (Exception e)
+    {
+      antallFeil++;
+      System.out.println
+          ("Oppgave 10f: Skal ikke kaste unntak her!");
+    }
+
+    tre.fjernHvis(x -> x % 2 != 0);  // fjerner bladnoder med oddetall
+
+    if (!tre.toString().equals("[1, 3, 7, 8, 10, 11]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 10g: Feil i metoden remove()!");
+    }
+
+    tre.fjernHvis(x -> true);
+
+    if (!tre.toString().equals("[1, 7, 8, 11]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 10h: Feil i metoden remove()!");
+    }
+
+    tre.fjernHvis(x -> true);
+
+    if (!tre.toString().equals("[7, 11]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 10i: Feil i metoden remove()!");
+    }
+
+    tre.fjernHvis(x -> true);
+
+    if (!tre.toString().equals("[7]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 10j: Feil i metoden remove()!");
+    }
+
+    tre.fjernHvis(x -> true);
+
+    if (!tre.toString().equals("[]"))
+    {
+      antallFeil++;
+      System.out.println("Oppgave 10k: Feil i metoden remove()!");
+    }
+
+    return antallFeil;
+
+  }  // slutt på Oppgave 10
+
 } // Oblig3Test
-

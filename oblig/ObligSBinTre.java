@@ -98,97 +98,91 @@ private static final class Node<T>   // en indre nodeklasse
         return false;
     }
   
-  @Override
-  public boolean fjern(T verdi)
-  {
-    if (verdi == null) return false;  // treet har ingen nullverdier
+    @Override
+    public boolean fjern(T verdi) {
+        if (verdi == null) return false;  // treet har ingen nullverdier
 
-    Node<T> p = rot, q = null;   // q skal være forelder til p
+        Node<T> p = rot, q = null;   // q skal være forelder til p
 
-    while (p != null)            // leter etter verdi
-    {
-      int cmp = comp.compare(verdi,p.verdi);      // sammenligner
-      if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
-      else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
-      else break;    // den søkte verdien ligger i p
-    }
-    if (p == null) return false;   // finner ikke verdi
+        while (p != null){            // leter etter verdi    
+            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
+            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
+            else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
+            else break;    // den søkte verdien ligger i p
+        }
+        if (p == null) return false;   // finner ikke verdi
+        if(p.venstre == null && p.høyre == null){
+            rot = null;
+        } else if (p.venstre == null || p.høyre == null) {  // Tilfelle 1) og 2)
+            Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
+            System.out.println("SATAN");
+            if (p == rot){
+                b.forelder = null;
+                rot = b;
+            } else if (p == q.venstre) {
+                q.venstre = b;
+            } else{
+              q.høyre = b;
+              b.forelder = q;
+            } 
+        } else { // Tilfelle 3)
+          Node<T> s = p, r = p.høyre;   // finner neste i inorden
+          if(p == rot){
+              System.out.println("ROT");
+                        if(p.venstre==null){
+                                if(p.høyre==null){
+                                    rot = null;
+                                } else{
+                                    p.høyre.forelder = null;
+                                    rot = p.høyre;
+                                }
+                        }
+                        else if(p.høyre==null){
+                                p.venstre.forelder = null;
+                                rot = p.venstre;
+                        }else{
+                            Node u = p;
+                                u = p.venstre;
+                                if(u.høyre != null){
+                                    while(u.høyre != null){
+                                        u = u.høyre;
+                                    }                            
+                                }
 
-    if (p.venstre == null || p.høyre == null)  // Tilfelle 1) og 2)
-    {
-      Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-        System.out.println("SATAN");
-      if (p == rot){
-          b.forelder = null;
-          rot = b;
-      } 
-      else if (p == q.venstre) {
-          q.venstre = b;
-      }
-      else{
-          q.høyre = b;
-          b.forelder = q;
-      } 
-    }
-    else  // Tilfelle 3)
-    {
-      Node<T> s = p, r = p.høyre;   // finner neste i inorden
-      if(p == rot){
-          System.out.println("ROT");
-                    if(p.venstre==null){
-                            if(p.høyre==null){
-                                rot = null;
-                            } else{
-                                p.høyre.forelder = null;
-                                rot = p.høyre;
-                            }
-                    }
-                    else if(p.høyre==null){
+    //                            String minTitle = minTitle(root);
+                            Node temp = p.høyre;
+
                             p.venstre.forelder = null;
                             rot = p.venstre;
-                    }else{
-                        Node u = p;
-                            u = p.venstre;
-                            if(u.høyre != null){
-                                while(u.høyre != null){
-                                    u = u.høyre;
-                                }                            
-                            }
-                            
-//                            String minTitle = minTitle(root);
-                        Node temp = p.høyre;
-                        
-                        p.venstre.forelder = null;
-                        rot = p.venstre;
-                        u.høyre = temp;
-                    }
-        }else {
-            while (r.venstre != null) {
-                s = r;    // s er forelder til r
-                r = r.venstre;
-                r.forelder = s;
+                            u.høyre = temp;
+                        }
+            }else {
+                while (r.venstre != null) {
+                    s = r;    // s er forelder til r
+                    r = r.venstre;
+                    r.forelder = s;
+                }
+
+                p.verdi = r.verdi;   // kopierer verdien i r til p
+
+                if (s != p){
+
+                    s.venstre = r.høyre;
+                    s.forelder = r;
+                    System.out.println("shit luck");
+                }else {
+                    s.høyre = r.høyre;
+
+                    s.forelder = q;
+                    s.høyre.forelder = s;
+
+                }      
             }
 
-            p.verdi = r.verdi;   // kopierer verdien i r til p
-
-            if (s != p){
-
-                s.venstre = r.høyre;
-                s.forelder = r;
-                System.out.println("shit luck");
-            }else {
-                s.høyre = r.høyre;
-
-                s.forelder = q;
-                s.høyre.forelder = s;
-
-            }      
         }
-      
-    }
 
-    antall--;   // det er nå én node mindre i treet
-    return true;
+        antall--;   // det er nå én node mindre i treet
+        return true;
   }
   
   public int fjernAlle(T verdi)
