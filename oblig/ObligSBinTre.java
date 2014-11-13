@@ -100,97 +100,65 @@ private static final class Node<T>   // en indre nodeklasse
   
     @Override
     public boolean fjern(T verdi) {
-        if (verdi == null) return false;  // treet har ingen nullverdier
-
-        Node<T> p = rot, q = null;   // q skal være forelder til p
-
-        while (p != null){            // leter etter verdi    
-            int cmp = comp.compare(verdi,p.verdi);      // sammenligner
-            if (cmp < 0) { q = p; p = p.venstre; }      // går til venstre
-            else if (cmp > 0) { q = p; p = p.høyre; }   // går til høyre
-            else break;    // den søkte verdien ligger i p
+       
+        if(verdi == null) return false;
+           
+        Node<T> p = rot;
+       
+        while(p!=null){
+            int cmp = comp.compare(verdi,p.verdi);
+           
+            if(cmp < 0) p=p.venstre;
+            else if(cmp > 0) p=p.høyre;
+            else break;
         }
-        if (p == null) return false;   // finner ikke verdi
-        if(p.venstre == null && p.høyre == null){
-            rot = null;
-        } else if (p.venstre == null || p.høyre == null) {  // Tilfelle 1) og 2)
-            Node<T> b = p.venstre != null ? p.venstre : p.høyre;  // b for barn
-            System.out.println("SATAN");
-            if (p == rot){
-                b.forelder = null;
-                rot = b;
-            } else if (p == q.venstre) {
-                q.venstre = b;
-            } else{
-              q.høyre = b;
-              b.forelder = q;
-            } 
-        } else { // Tilfelle 3)
-          Node<T> s = p, r = p.høyre;   // finner neste i inorden
-          if(p == rot){
-              System.out.println("ROT");
-                        if(p.venstre==null){
-                                if(p.høyre==null){
-                                    rot = null;
-                                } else{
-                                    p.høyre.forelder = null;
-                                    rot = p.høyre;
-                                }
-                        }
-                        else if(p.høyre==null){
-                                p.venstre.forelder = null;
-                                rot = p.venstre;
-                        }else{
-                            Node u = p;
-                                u = p.venstre;
-                                if(u.høyre != null){
-                                    while(u.høyre != null){
-                                        u = u.høyre;
-                                    }                            
-                                }
-
-    //                            String minTitle = minTitle(root);
-                            Node temp = p.høyre;
-
-                            p.venstre.forelder = null;
-                            rot = p.venstre;
-                            u.høyre = temp;
-                        }
-            }else {
-                while (r.venstre != null) {
-                    s = r;    // s er forelder til r
-                    r = r.venstre;
-                    r.forelder = s;
-                }
-
-                p.verdi = r.verdi;   // kopierer verdien i r til p
-
-                if (s != p){
-
-                    s.venstre = r.høyre;
-                    s.forelder = r;
-                    System.out.println("shit luck");
-                }else {
-                    s.høyre = r.høyre;
-
-                    s.forelder = q;
-                    s.høyre.forelder = s;
-
-                }      
+       
+        if (p==null) return false;
+       
+        if (p.venstre==null || p.høyre==null) {
+           
+            Node<T> b = (p.venstre!=null) ? p.venstre : p.høyre;
+           
+            if (p == rot) {
+                rot =  b;
+                if(b!=null) b.forelder=null;
             }
-
+            else if (p==p.forelder.venstre) {
+                if(b!=null)b.forelder = p.forelder;
+                p.forelder.venstre = b;
+            } else {
+               
+                if(b!=null)b.forelder = p.forelder;
+                p.forelder.høyre = b;
+            }
         }
-
-        antall--;   // det er nå én node mindre i treet
-        return true;
-  }
+        else {
+           
+            Node<T> r = p.høyre;
+            while (r.venstre != null) r = r.venstre;
+            p.verdi = r.verdi;
+           
+            if(r.forelder!=p) {
+                Node<T> q = r.forelder;
+                q.venstre = r.høyre;
+                if(q.venstre!=null)q.venstre.forelder = q;
+            }
+            else{    
+                p.høyre =  r.høyre;              
+                if(p.høyre !=null) p.høyre.forelder = p;
+ 
+            }
+        }
+       
+        antall--;
+        return true;      
+    }
   
   public int fjernAlle(T verdi)
   {
       int i = 0;
       boolean fjernet = true;
       while(fjernet!=false){
-          System.out.println("verdi"+verdi);
           if(fjern(verdi))
             i++;
           else 
@@ -308,8 +276,10 @@ private static final class Node<T>   // en indre nodeklasse
       if(rot != null){
         Node p = rot;
         s.append(p);
-        while(p.høyre != null){
-            p = p.høyre;
+        while(p.høyre != null || p.venstre!=null ){
+            if(p.høyre != null)
+                p = p.høyre;
+            else p = p.venstre;
             s.append(",").append(" ").append(p);            
         }      
       }
@@ -317,48 +287,101 @@ private static final class Node<T>   // en indre nodeklasse
       return s.toString();
   }
   
-    public String[] grener() {
-        Queue<Object> q = new LinkedList<Object>();
-        String[] st = new String[0];
-        q.add(rot);
-        q.add(rot.verdi + "");
-        int size =0;
-        while(!q.isEmpty()){
+  /*
+  7. Lag metoden public String[] grener(). Den skal returnere en 
+  String-tabell som inneholder (som tabellelementer) alle grenene i 
+  treet i rekkefølge fra venstre mot høyre. Hvis treet er tomt skal det 
+  returneres en tom tabell. Flg. kodebit viser hvordan det skal fungere:
 
-            Node p = (Node) q.remove();
-            String headPath = (String) q.remove();
+  ObligSBinTre<Character> tre = new ObligSBinTre<>(Comparator.naturalOrder());
 
-            if(p.venstre==null && p.høyre==null){
-                String[] tempArray = new String[size+1];
-                    System.arraycopy(st, 0, tempArray, 0, size);
-                    tempArray[size] = headPath;
-                    st = tempArray;
-                    size++;         
-//                System.out.println(headPath);
-                continue;
+  char[] verdier = "GSAHQNRBFCJDOEPKIML".toCharArray();
+  for (char c : verdier) tre.leggInn(c);
+
+  String[] s = tre.grener();
+
+  for (String gren : s) System.out.println(gren);
+
+  // Utskrift:
+  // [G, A, B, F, C, D, E]
+  // [G, S, H, Q, N, J, I]
+  // [G, S, H, Q, N, J, K, M, L]
+  // [G, S, H, Q, N, O, P]
+  // [G, S, H, Q, R]
+  
+  */
+  
+   public String[] grener() {
+        if(tom())return new String[0];
+        String[] stringTabell = new String[1];
+        StringJoiner s;
+        ArrayDeque<Node<T>> que = new ArrayDeque();
+        ArrayDeque<Node<T>> nodegrenque = new ArrayDeque();
+
+        boolean tomListe = false;
+        
+        Node<T> p = rot;
+        int i=0;
+        
+        while(!tomListe){
+            s = new StringJoiner(", ","[","]");
+    
+            while(p.venstre!=null || p.høyre!=null) {
+                if(p.venstre!=null) {
+                    if(p.høyre!=null) que.add(p.høyre);
+                    p = p.venstre;
+                }else if(p.høyre!=null){
+                    p = p.høyre; 
+                }
             }
 
-            if(p.venstre!=null){
-                String leftStr =  headPath + ", " + p.venstre.verdi;
-                q.add(p.venstre);
-                q.add(leftStr);
-                System.out.println("leftStr "+leftStr);
-            }
+            while(p!=null) {nodegrenque.add(p);p=p.forelder;}
+            
+            while(!nodegrenque.isEmpty()) 
+                s.add(nodegrenque.pollLast().toString());
+            
+            if(stringTabell[stringTabell.length-1]!=null) 
+                stringTabell = Arrays.copyOf(stringTabell, stringTabell.length+1);
+            stringTabell[i++] = s.toString();
 
-            if(p.høyre!=null){
-                String rightStr =  headPath + ", " + p.høyre.verdi;
-                q.add(p.høyre);
-                q.add(rightStr);
-            }
+            if(!que.isEmpty()) p = que.pollLast();
+            else tomListe = true;            
         }
-        return st;
-  }
+
+        return stringTabell;
+    }
   
-  public String bladnodeverdier()
-  {
-    throw new UnsupportedOperationException("Ikke kodet ennå!");
-  }
-  
+   /*
+8. Lag metoden public String bladnodeverdier(). Den skal returnere en 
+   tegnstreng med verdiene i bladnodene. Tegnstrengen skal se ut som 
+   vanlig (med [ og ] og med komma og mellomrom). Her skal du bruke en 
+   rekursiv hjelpemetode som traverserer treet. Bladnodeverdiene skal i 
+   tegnstrengen stå i rekkefølge fra venstre mot høyre.   
+   */
+    public String bladnodeverdier() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("[");
+        Node p = rot;
+        finnBladnode(p, sb);
+        sb.append("]");
+        return sb.toString();
+    }
+    private void finnBladnode(Node p, StringBuilder sb) {
+        if (p == null) {
+	    return;
+        }
+        if(p.venstre == null && p.høyre == null){
+            if(!sb.toString().equals("[")){
+                sb.append(",").append(" ").append(p);
+            } else {
+                sb.append(p);
+            }
+        }        
+        finnBladnode(p.venstre, sb);
+        finnBladnode(p.høyre, sb);
+    }
+
+    
   @Override
   public Iterator<T> iterator()
   {

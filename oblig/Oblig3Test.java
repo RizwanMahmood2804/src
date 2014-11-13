@@ -23,10 +23,10 @@ public class Oblig3Test
     antallFeil += oppgave3();
     antallFeil += oppgave4();
     antallFeil += oppgave5();
-//    antallFeil += oppgave6();
-//    antallFeil += oppgave7();
-//    antallFeil += oppgave8();
-//    antallFeil += oppgave9();
+    antallFeil += oppgave6();
+    antallFeil += oppgave7();
+    antallFeil += oppgave8();
+    antallFeil += oppgave9();
 //    antallFeil += oppgave10();
 
     if (antallFeil == 0)
@@ -287,10 +287,9 @@ public class Oblig3Test
 
     int[] a = {6,3,9,1,5,7,10,2,4,8,11};
     for (int verdi : a) tre.leggInn(verdi);
-
+    s = tre.toString();
     tre.fjern(2);
     s = tre.toString();
-
     if (!s.equals("[1, 3, 4, 5, 6, 7, 8, 9, 10, 11]"))
     {
       antallFeil++;
@@ -323,8 +322,10 @@ public class Oblig3Test
       antallFeil++;
       System.out.println("Oppgave 5e: Feil i fjern(T)!");
     }
-
-    tre.fjern(10); tre.fjern(11); tre.fjern(8); tre.fjern(7);
+    tre.fjern(10); 
+    tre.fjern(11);
+    tre.fjern(8); 
+    tre.fjern(7);
     s = tre.toString();
 
     if (!s.equals("[1, 3, 5]"))
@@ -536,7 +537,6 @@ public class Oblig3Test
 
     tre.leggInn(10);
     s = tre.bladnodeverdier();
-
     if (!s.equals("[10]"))
     {
       antallFeil++;
@@ -557,7 +557,6 @@ public class Oblig3Test
     int[] a = {7,5,8,15,6,9,13,16,12,14};
     for (int verdi : a) tre.leggInn(verdi);
     s = tre.bladnodeverdier();
-
     if (!s.equals("[6, 9, 12, 14, 16]"))
     {
       antallFeil++;
